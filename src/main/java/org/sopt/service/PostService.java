@@ -1,15 +1,11 @@
 package org.sopt.service;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.sopt.Post;
-import org.sopt.domain.PostRepository;
+import org.sopt.domain.Post;
+import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
-
-import java.util.List;
-
 
 public class PostService {
 	private final PostRepository postRepository = new PostRepository();
