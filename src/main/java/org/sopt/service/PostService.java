@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sopt.common.exception.BusinessException;
 import org.sopt.common.exception.PostNotFoundException;
+import org.sopt.common.validator.PostValidator;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
@@ -15,12 +16,7 @@ public class PostService {
 
 	// CREATE
 	public CreatePostResponse createPost(CreatePostRequest request) {
-		if (request.title == null || request.title.isBlank()) {
-			throw BusinessException.badRequest("제목은 필수입니다!");
-		}
-		if (request.content == null || request.content.isBlank()) {
-			throw BusinessException.badRequest("내용은 필수입니다!");
-		}
+		PostValidator.validate(request);
 		String createdAt = java.time.LocalDateTime.now().toString();
 		Post post = new Post(postRepository.generateId(), request.title, request.content, request.author, createdAt);
 		postRepository.save(post);
