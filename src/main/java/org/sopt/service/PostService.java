@@ -1,4 +1,5 @@
 package org.sopt.service;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.sopt.domain.Post;
@@ -26,8 +27,14 @@ public class PostService {
 
 	// READ - 전체 📝 과제
 	public List<PostResponse> getAllPosts() {
-		// TODO
-		return null;
+		List<Post> posts = postRepository.findAll();
+		List<PostResponse> responses = new ArrayList<>();
+
+		for (Post post : posts) {
+			responses.add(new PostResponse(post));
+		}
+
+		return responses;
 	}
 
 	// READ - 단건 📝 과제

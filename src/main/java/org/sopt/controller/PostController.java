@@ -1,4 +1,5 @@
 package org.sopt.controller;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.sopt.dto.request.CreatePostRequest;
@@ -20,8 +21,12 @@ public class PostController {
 
 	// GET /posts 📝 과제
 	public List<PostResponse> getAllPosts() {
-		// TODO: postService.getAllPosts() 호출해서 반환
-		return null;
+		try {
+			return postService.getAllPosts();
+		}
+		catch (IllegalArgumentException e) {
+			return new ArrayList<>();
+		}
 	}
 
 	// GET /posts/{id} 📝 과제
