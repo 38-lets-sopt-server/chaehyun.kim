@@ -21,18 +21,17 @@ public class PostController {
 
 	// GET /posts 📝 과제
 	public List<PostResponse> getAllPosts() {
-		try {
-			return postService.getAllPosts();
-		}
-		catch (IllegalArgumentException e) {
-			return new ArrayList<>();
-		}
+		return postService.getAllPosts();
 	}
 
 	// GET /posts/{id} 📝 과제
 	public PostResponse getPost(Long id) {
-		// TODO: postService.getPost(id) 호출, 예외 발생 시 null 반환
-		return null;
+		try {
+			return postService.getPost(id);
+		} catch (IllegalArgumentException e) {
+			System.out.println("🚫 " + e.getMessage());
+			return null;
+		}
 	}
 
 	// PUT /posts/{id} 📝 과제
