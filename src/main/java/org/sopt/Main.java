@@ -40,7 +40,7 @@ public class Main {
 					CreatePostResponse response = postController.createPost(
 						new CreatePostRequest(title, content, author)
 					);
-					System.out.println(response.message);
+					System.out.println(response.getMessage());
 					break;
 
 				case 2:
