@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sopt.common.exception.BusinessException;
+import org.sopt.common.exception.PostNotFoundException;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
@@ -43,7 +44,7 @@ public class PostService {
 		Post post = postRepository.findById(id);
 
 		if (post == null) {
-			throw BusinessException.notFound("해당 게시글이 존재하지 않습니다." + id);
+			throw new PostNotFoundException(id);
 		}
 
 		return new PostResponse(post);
@@ -54,7 +55,7 @@ public class PostService {
 		Post post = postRepository.findById(id);
 
 		if (post == null) {
-			throw BusinessException.notFound("해당 게시글이 존재하지 않습니다." + id);
+			throw new PostNotFoundException(id);
 		}
 
 		post.update(newTitle, newContent);
@@ -65,7 +66,7 @@ public class PostService {
 		Post post = postRepository.findById(id);
 
 		if (post == null) {
-			throw BusinessException.notFound("해당 게시글이 존재하지 않습니다." + id);
+			throw new PostNotFoundException(id);
 		}
 
 		postRepository.delete(post);
