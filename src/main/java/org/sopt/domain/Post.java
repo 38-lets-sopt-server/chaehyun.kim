@@ -1,18 +1,22 @@
 package org.sopt.domain;
 
 public class Post {
-	private Long id;
+	private final Long id;
 	private String title;
 	private String content;
-	private String author;
-	private String createdAt;
+	private final String author;
+	private final String createdAt;
+	private final int commentCount;
+	private final int likeCount;
 
-	public Post(Long id, String title, String content, String author, String createdAt) {
+	public Post(Long id, String title, String content, String author, String createdAt, int commentCount, int likeCount) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.author = author;
 		this.createdAt = createdAt;
+		this.commentCount = commentCount;
+		this.likeCount = likeCount;
 	}
 
 	public Long getId() {
@@ -33,6 +37,14 @@ public class Post {
 
 	public String getCreatedAt() {
 		return createdAt;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
 	}
 
 	public void update(String title, String content) {

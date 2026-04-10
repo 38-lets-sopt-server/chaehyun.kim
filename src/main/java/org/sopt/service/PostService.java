@@ -22,7 +22,9 @@ public class PostService {
 			request.getTitle(),
 			request.getContent(),
 			request.getAuthor(),
-			createdAt);
+			createdAt,
+			0,
+			0);
 		postRepository.save(post);
 		return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
 	}
