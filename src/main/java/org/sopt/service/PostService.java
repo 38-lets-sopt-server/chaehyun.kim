@@ -2,6 +2,7 @@ package org.sopt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sopt.common.exception.BusinessException;
 import org.sopt.domain.Post;
 import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
@@ -14,10 +15,10 @@ public class PostService {
 	// CREATE
 	public CreatePostResponse createPost(CreatePostRequest request) {
 		if (request.title == null || request.title.isBlank()) {
-			throw new IllegalArgumentException("제목은 필수입니다!");
+			throw BusinessException.badRequest("제목은 필수입니다!");
 		}
 		if (request.content == null || request.content.isBlank()) {
-			throw new IllegalArgumentException("내용은 필수입니다!");
+			throw BusinessException.badRequest("내용은 필수입니다!");
 		}
 		String createdAt = java.time.LocalDateTime.now().toString();
 		Post post = new Post(postRepository.generateId(), request.title, request.content, request.author, createdAt);
@@ -42,7 +43,7 @@ public class PostService {
 		Post post = postRepository.findById(id);
 
 		if (post == null) {
-			throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다." + id);
+			throw BusinessException.notFound("해당 게시글이 존재하지 않습니다." + id);
 		}
 
 		return new PostResponse(post);
@@ -53,7 +54,7 @@ public class PostService {
 		Post post = postRepository.findById(id);
 
 		if (post == null) {
-			throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다." + id);
+			throw BusinessException.notFound("해당 게시글이 존재하지 않습니다." + id);
 		}
 
 		post.update(newTitle, newContent);
@@ -64,7 +65,7 @@ public class PostService {
 		Post post = postRepository.findById(id);
 
 		if (post == null) {
-			throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다." + id);
+			throw BusinessException.notFound("해당 게시글이 존재하지 않습니다." + id);
 		}
 
 		postRepository.delete(post);

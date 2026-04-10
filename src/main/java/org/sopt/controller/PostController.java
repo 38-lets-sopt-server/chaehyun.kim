@@ -1,7 +1,7 @@
 package org.sopt.controller;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.sopt.common.exception.BusinessException;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
@@ -28,8 +28,8 @@ public class PostController {
 	public PostResponse getPost(Long id) {
 		try {
 			return postService.getPost(id);
-		} catch (IllegalArgumentException e) {
-			System.out.println("🚫 " + e.getMessage());
+		} catch (BusinessException e) {
+			System.out.println("["+e.getCode()+"] "+ e.getMessage());
 			return null;
 		}
 	}
@@ -39,8 +39,8 @@ public class PostController {
 		try{
 			postService.updatePost(id, newTitle, newContent);
 			System.out.println("게시글이 수정되었습니다.");
-		} catch (IllegalArgumentException e) {
-			System.out.println("🚫 " + e.getMessage());
+		} catch (BusinessException e) {
+			System.out.println("["+e.getCode()+"] "+ e.getMessage());
 		}
 	}
 
@@ -49,8 +49,8 @@ public class PostController {
 		try {
 			postService.deletePost(id);
 			System.out.println("게시글이 삭제되었습니다.");
-		} catch (IllegalArgumentException e) {
-			System.out.println("🚫 " + e.getMessage());
+		} catch (BusinessException e) {
+			System.out.println("["+e.getCode()+"] "+ e.getMessage());
 		}
 	}
 }
