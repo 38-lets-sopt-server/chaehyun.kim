@@ -46,6 +46,11 @@ public class PostController {
 
 	// DELETE /posts/{id} 📝 과제
 	public void deletePost(Long id) {
-		// TODO: postService.deletePost() 호출, 예외 발생 시 에러 메시지 출력
+		try {
+			postService.deletePost(id);
+			System.out.println("게시글이 삭제되었습니다.");
+		} catch (IllegalArgumentException e) {
+			System.out.println("🚫 " + e.getMessage());
+		}
 	}
 }

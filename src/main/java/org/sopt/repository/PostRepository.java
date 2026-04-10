@@ -29,4 +29,9 @@ public class PostRepository {
 	public List<Post> findAll() {
 		return postList;
 	}
+
+
+	public void delete(Post post) {
+		postList.remove(post);
+	}
 }

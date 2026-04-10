@@ -61,6 +61,12 @@ public class PostService {
 
 	// DELETE 📝 과제
 	public void deletePost(Long id) {
-		// TODO
+		Post post = postRepository.findById(id);
+
+		if (post == null) {
+			throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다." + id);
+		}
+
+		post.delete(post);
 	}
 }
