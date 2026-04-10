@@ -27,7 +27,7 @@ public class PostRepository {
 	}
 
 	public List<Post> findAll() {
-		return postList;
+		return new ArrayList<>(postList);
 	}
 
 

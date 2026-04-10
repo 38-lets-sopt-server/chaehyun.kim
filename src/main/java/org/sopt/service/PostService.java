@@ -2,7 +2,6 @@ package org.sopt.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sopt.common.exception.BusinessException;
 import org.sopt.common.exception.PostNotFoundException;
 import org.sopt.common.validator.PostValidator;
 import org.sopt.domain.Post;
@@ -16,9 +15,14 @@ public class PostService {
 
 	// CREATE
 	public CreatePostResponse createPost(CreatePostRequest request) {
-		PostValidator.validate(request);
+		PostValidator.validateCreate(request);
 		String createdAt = java.time.LocalDateTime.now().toString();
-		Post post = new Post(postRepository.generateId(), request.title, request.content, request.author, createdAt);
+		Post post = new Post(
+			postRepository.generateId(),
+			request.getTitle(),
+			request.getContent(),
+			request.getAuthor(),
+			createdAt);
 		postRepository.save(post);
 		return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
 	}
@@ -48,6 +52,8 @@ public class PostService {
 
 	// UPDATE 📝 과제
 	public void updatePost(Long id, String newTitle, String newContent) {
+		PostValidator.validateUpdate(newTitle, newContent);
+
 		Post post = postRepository.findById(id);
 
 		if (post == null) {

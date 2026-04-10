@@ -15,7 +15,7 @@ public class PostController {
 	public CreatePostResponse createPost(CreatePostRequest request) {
 		try {
 			return postService.createPost(request);
-		} catch (IllegalArgumentException e) {
+		} catch (BusinessException e) {
 			return new CreatePostResponse(null, "🚫 " + e.getMessage());
 		}
 	}
