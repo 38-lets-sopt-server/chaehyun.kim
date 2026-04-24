@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
-	private final PostRepository postRepository = new PostRepository();
+	private final PostRepository postRepository;
+
+	public PostService(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
 
 	// CREATE
 	public CreatePostResponse createPost(CreatePostRequest request) {
