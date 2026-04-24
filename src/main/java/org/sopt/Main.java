@@ -7,8 +7,6 @@ import org.sopt.controller.PostController;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
-import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
@@ -42,7 +40,7 @@ public class Main {
 					CreatePostResponse response = postController.createPost(
 						new CreatePostRequest(title, content, author)
 					);
-					System.out.println(response.message);
+					System.out.println(response.getMessage());
 					break;
 
 				case 2:
