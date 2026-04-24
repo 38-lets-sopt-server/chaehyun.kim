@@ -8,6 +8,7 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 
+// TODO: 2차 과제에서 GlobalExceptionHandler 만들기
 public class PostController {
 	private final PostService postService = new PostService();
 
@@ -30,7 +31,7 @@ public class PostController {
 		try {
 			return postService.getPost(id);
 		} catch (PostNotFoundException e) {
-			System.out.println("["+e.getCode()+"] "+ e.getMessage());
+			System.out.println("["+e.getErrorCode().getCode()+"] "+ e.getMessage());
 			return null;
 		}
 	}
@@ -41,7 +42,7 @@ public class PostController {
 			postService.updatePost(id, newTitle, newContent);
 			System.out.println("게시글이 수정되었습니다.");
 		} catch (PostNotFoundException e) {
-			System.out.println("["+e.getCode()+"] "+ e.getMessage());
+			System.out.println("["+e.getErrorCode().getCode()+"] "+ e.getMessage());
 		}
 	}
 
@@ -51,7 +52,7 @@ public class PostController {
 			postService.deletePost(id);
 			System.out.println("게시글이 삭제되었습니다.");
 		} catch (PostNotFoundException e) {
-			System.out.println("["+e.getCode()+"] "+ e.getMessage());
+			System.out.println("["+e.getErrorCode().getCode()+"] "+ e.getMessage());
 		}
 	}
 }

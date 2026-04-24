@@ -1,20 +1,19 @@
 package org.sopt.common.exception;
 
 public class BusinessException extends RuntimeException {
-	private final String code;
+	private final ErrorCode errorCode;
 
-	public BusinessException(String message, String code) {
-		super(message);
-		this.code = code;
+	public BusinessException(ErrorCode errorCode) {
+		super(errorCode.getMessage());
+		this.errorCode = errorCode;
 	}
 
-	public String getCode() { return code; }
-
-	public static BusinessException notFound(String message) {
-		return new BusinessException(message, "NOT_FOUND");
+	public BusinessException(ErrorCode errorCode, String customMessage) {
+		super(customMessage);
+		this.errorCode = errorCode;
 	}
 
-	public static BusinessException badRequest(String message) {
-		return new BusinessException(message, "BAD_REQUEST");
+	public ErrorCode getErrorCode() {
+		return errorCode;
 	}
 }
