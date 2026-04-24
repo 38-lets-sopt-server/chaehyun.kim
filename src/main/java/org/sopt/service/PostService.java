@@ -9,7 +9,9 @@ import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostResponse;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostService {
 	private final PostRepository postRepository = new PostRepository();
 
