@@ -12,6 +12,7 @@ import org.sopt.common.exception.PostNotFoundException;
 import org.sopt.common.validator.PostValidator;
 import org.sopt.domain.Post;
 import org.sopt.dto.request.UpdatePostRequest;
+import org.sopt.dto.response.PostListResponse;
 import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
@@ -44,18 +45,27 @@ public class PostService {
 		return new CreatePostResponse(post.getId());
 	}
 
-	public List<PostResponse> getAllPosts(BoardType boardType, Integer page, Integer size) {
+	public PostListResponse getAllPosts(BoardType boardType, Integer page, Integer size) {
 		BoardType finalBoardType = Optional.ofNullable(boardType).orElse(BoardType.FREE);
 		int finalPage = Optional.ofNullable(page).orElse(0);
 		int finalSize = Optional.ofNullable(size).orElse(10);
 
-		return postRepository.findAll().stream()
+		List<Post> filteredPosts = postRepository.findAll().stream()
 			.filter(post -> post.getBoardType() == finalBoardType)
 			.sorted((p1, p2) -> p2.getId().compareTo(p1.getId()))
+			.toList();
+
+		long totalCount = filteredPosts.size();
+		int totalPages = (int) Math.ceil((double) totalCount / finalSize);
+		boolean hasNext = totalCount > (long) (finalPage + 1) * finalSize;
+
+		List<PostResponse> posts = filteredPosts.stream()
 			.skip((long) finalPage * finalSize)
 			.limit(finalSize)
 			.map(PostResponse::from)
 			.collect(Collectors.toList());
+
+		return PostListResponse.of(posts, totalCount, totalPages, hasNext);
 	}
 
 	public PostResponse getPost(Long id) {

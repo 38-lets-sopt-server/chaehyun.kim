@@ -6,6 +6,7 @@ import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.PostListResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -44,12 +45,13 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<CustomAPIResponse<List<PostResponse>>> getAllPosts(
+	public ResponseEntity<CustomAPIResponse<PostListResponse>> getAllPosts(
 		@RequestParam(required = false) BoardType boardType,
 		@RequestParam(required = false) Integer page,
 		@RequestParam(required = false) Integer size
 	) {
-		List<PostResponse> response = postService.getAllPosts(boardType, page, size);
+		PostListResponse response = postService.getAllPosts(boardType, page, size);
+
 		return ResponseEntity.ok(
 			CustomAPIResponse.createSuccess(
 				HttpStatus.OK.value(),
