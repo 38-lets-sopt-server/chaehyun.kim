@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// TODO: 2차 과제에서 GlobalExceptionHandler 만들기
 @RestController
 @RequestMapping("/posts")
 public class PostController {
