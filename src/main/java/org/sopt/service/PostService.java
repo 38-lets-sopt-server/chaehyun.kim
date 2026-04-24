@@ -1,4 +1,6 @@
 package org.sopt.service;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,28 +16,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 	private final PostRepository postRepository;
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	public PostService(PostRepository postRepository) {
 		this.postRepository = postRepository;
 	}
 
-	// CREATE
 	public CreatePostResponse createPost(CreatePostRequest request) {
-		PostValidator.validateCreate(request);
-		String createdAt = java.time.LocalDateTime.now().toString();
+		String finalAuthor = request.isAnonymous() ? "익명" : request.author();
+		String createdAt = LocalDateTime.now().format(FORMATTER);
 		Post post = new Post(
 			postRepository.generateId(),
+			request.boardType(),
 			request.title(),
 			request.content(),
 			request.author(),
-			createdAt,
-			0,
-			0);
+			createdAt
+		);
 		postRepository.save(post);
-		return new CreatePostResponse(post.getId(), "게시글 등록 완료!");
+		return new CreatePostResponse(post.getId());
 	}
 
-	// READ - 전체 📝 과제
 	public List<PostResponse> getAllPosts() {
 		List<Post> posts = postRepository.findAll();
 		List<PostResponse> responses = new ArrayList<>();
