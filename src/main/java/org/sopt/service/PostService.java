@@ -6,9 +6,12 @@ import java.util.stream.Collectors;
 import java.util.List;
 
 import org.sopt.common.enums.BoardType;
+import org.sopt.common.exception.BusinessException;
+import org.sopt.common.exception.ErrorCode;
 import org.sopt.common.exception.PostNotFoundException;
 import org.sopt.common.validator.PostValidator;
 import org.sopt.domain.Post;
+import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.repository.PostRepository;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
@@ -60,18 +63,25 @@ public class PostService {
 		return PostResponse.from(post);
 	}
 
-	public void updatePost(Long id, String newTitle, String newContent) {
-		PostValidator.validateUpdate(newTitle, newContent);
-
+	public void updatePost(Long id, UpdatePostRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		post.update(newTitle, newContent);
+		if (!post.getAuthor().equals(request.author())) {
+			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
+		}
+
+		PostValidator.validateUpdate(request.title(), request.content());
+		post.update(request.title(), request.content());
 	}
 
-	public void deletePost(Long id) {
+	public void deletePost(Long id, String author) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
+
+		if (!post.getAuthor().equals(author)) {
+			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
+		}
 
 		postRepository.delete(post);
 	}

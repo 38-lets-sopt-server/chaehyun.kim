@@ -8,6 +8,9 @@ public enum ErrorCode {
 	INVALID_POST_CONTENT(40002, "게시글 내용은 필수입니다."),
 	INVALID_POST_AUTHOR(40003, "작성자는 필수입니다."),
 
+	// 403
+	HANDLE_ACCESS_DENIED(40300, "해당 게시글에 대한 권한이 없습니다."),
+
 	// 404
 	POST_NOT_FOUND(40401, "해당 게시글을 찾을 수 없습니다."),
 	USER_NOT_FOUND(40402, "해당 사용자를 찾을 수 없습니다."),

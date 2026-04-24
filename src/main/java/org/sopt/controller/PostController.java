@@ -1,6 +1,7 @@
 package org.sopt.controller;
 import java.util.List;
 
+import org.sopt.common.enums.BoardType;
 import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,8 +44,12 @@ public class PostController {
 	}
 
 	@GetMapping
-	public ResponseEntity<CustomAPIResponse<List<PostResponse>>> getAllPosts() {
-		List<PostResponse> response = postService.getAllPosts();
+	public ResponseEntity<CustomAPIResponse<List<PostResponse>>> getAllPosts(
+		@RequestParam(required = false) BoardType boardType,
+		@RequestParam(required = false) Integer page,
+		@RequestParam(required = false) Integer size
+	) {
+		List<PostResponse> response = postService.getAllPosts(boardType, page, size);
 		return ResponseEntity.ok(
 			CustomAPIResponse.createSuccess(
 				HttpStatus.OK.value(),
@@ -70,7 +76,7 @@ public class PostController {
 		@PathVariable Long id,
 		@RequestBody UpdatePostRequest request
 	) {
-		postService.updatePost(id, request.title(), request.content());
+		postService.updatePost(id, request);
 
 		return ResponseEntity.ok(
 			CustomAPIResponse.createSuccess(
@@ -82,13 +88,16 @@ public class PostController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<CustomAPIResponse<Void>> deletePost(@PathVariable Long id) {
-		postService.deletePost(id);
+	public ResponseEntity<CustomAPIResponse<Void>> deletePost(
+		@PathVariable Long id,
+		@RequestParam String author
+	) {
+		postService.deletePost(id, author);
 
 		return ResponseEntity.ok(
 			CustomAPIResponse.createSuccess(
 				HttpStatus.OK.value(),
-				"리워드 계좌 변경 성공",
+				"게시글 삭제 성공",
 				null
 			)
 		);
