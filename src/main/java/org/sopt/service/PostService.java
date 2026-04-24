@@ -28,6 +28,8 @@ public class PostService {
 	}
 
 	public CreatePostResponse createPost(CreatePostRequest request) {
+		PostValidator.validateCreate(request);
+
 		String finalAuthor = request.isAnonymous() ? "익명" : request.author();
 		String createdAt = LocalDateTime.now().format(FORMATTER);
 		Post post = new Post(
