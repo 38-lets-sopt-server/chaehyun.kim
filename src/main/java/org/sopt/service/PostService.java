@@ -1,9 +1,11 @@
 package org.sopt.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.List;
 
+import org.sopt.common.enums.BoardType;
 import org.sopt.common.exception.PostNotFoundException;
 import org.sopt.common.validator.PostValidator;
 import org.sopt.domain.Post;
@@ -30,33 +32,34 @@ public class PostService {
 			request.boardType(),
 			request.title(),
 			request.content(),
-			request.author(),
+			finalAuthor,
 			createdAt
 		);
 		postRepository.save(post);
 		return new CreatePostResponse(post.getId());
 	}
 
-	public List<PostResponse> getAllPosts() {
-		List<Post> posts = postRepository.findAll();
-		List<PostResponse> responses = new ArrayList<>();
+	public List<PostResponse> getAllPosts(BoardType boardType, int page, int size) {
+		BoardType finalBoardType = Optional.ofNullable(boardType).orElse(BoardType.FREE);
+		int finalPage = Optional.ofNullable(page).orElse(0);
+		int finalSize = Optional.ofNullable(size).orElse(10);
 
-		for (Post post : posts) {
-			responses.add(new PostResponse(post));
-		}
-
-		return responses;
+		return postRepository.findAll().stream()
+			.filter(post -> post.getBoardType() == finalBoardType)
+			.sorted((p1, p2) -> p2.getId().compareTo(p1.getId()))
+			.skip((long) finalPage * size)
+			.limit(finalSize)
+			.map(PostResponse::from)
+			.collect(Collectors.toList());
 	}
 
-	// READ - 단건 📝 과제
 	public PostResponse getPost(Long id) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		return new PostResponse(post);
+		return PostResponse.from(post);
 	}
 
-	// UPDATE 📝 과제
 	public void updatePost(Long id, String newTitle, String newContent) {
 		PostValidator.validateUpdate(newTitle, newContent);
 
@@ -66,7 +69,6 @@ public class PostService {
 		post.update(newTitle, newContent);
 	}
 
-	// DELETE 📝 과제
 	public void deletePost(Long id) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
