@@ -44,7 +44,7 @@ public class PostService {
 		return new CreatePostResponse(post.getId());
 	}
 
-	public List<PostResponse> getAllPosts(BoardType boardType, int page, int size) {
+	public List<PostResponse> getAllPosts(BoardType boardType, Integer page, Integer size) {
 		BoardType finalBoardType = Optional.ofNullable(boardType).orElse(BoardType.FREE);
 		int finalPage = Optional.ofNullable(page).orElse(0);
 		int finalSize = Optional.ofNullable(size).orElse(10);
@@ -52,7 +52,7 @@ public class PostService {
 		return postRepository.findAll().stream()
 			.filter(post -> post.getBoardType() == finalBoardType)
 			.sorted((p1, p2) -> p2.getId().compareTo(p1.getId()))
-			.skip((long) finalPage * size)
+			.skip((long) finalPage * finalSize)
 			.limit(finalSize)
 			.map(PostResponse::from)
 			.collect(Collectors.toList());
