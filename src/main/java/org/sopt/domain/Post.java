@@ -1,7 +1,10 @@
 package org.sopt.domain;
 
+import org.sopt.common.enums.BoardType;
+
 public class Post {
 	private final Long id;
+	private final BoardType boardType;
 	private String title;
 	private String content;
 	private String author;
@@ -9,19 +12,22 @@ public class Post {
 	private int commentCount;
 	private int likeCount;
 
-	public Post(Long id, String title, String content, String author, String createdAt, int commentCount, int likeCount) {
+	public Post(Long id, BoardType boardType, String title, String content, String author, String createdAt) {
 		this.id = id;
+		this.boardType = boardType;
 		this.title = title;
 		this.content = content;
 		this.author = author;
 		this.createdAt = createdAt;
-		this.commentCount = commentCount;
-		this.likeCount = likeCount;
+		this.commentCount = 0;
+		this.likeCount = 0;
 	}
 
 	public Long getId() {
 		return id;
 	}
+
+	public BoardType getBoardType() { return boardType; }
 
 	public String getTitle() {
 		return title;
@@ -51,6 +57,10 @@ public class Post {
 		this.title = title;
 		this.content = content;
 	}
+
+	// TODO: 좋아요, 댓글 로직 구현
+	public void increaseLikeCount() { this.likeCount++; }
+	public void increaseCommentCount() { this.commentCount++; }
 
 	public String getInfo() {
 		return "[" + id + "] " + title + " - " + author + " (" + createdAt + ")\n" + content;
