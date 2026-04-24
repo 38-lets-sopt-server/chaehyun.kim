@@ -19,9 +19,9 @@ public class PostService {
 		String createdAt = java.time.LocalDateTime.now().toString();
 		Post post = new Post(
 			postRepository.generateId(),
-			request.getTitle(),
-			request.getContent(),
-			request.getAuthor(),
+			request.title(),
+			request.content(),
+			request.author(),
 			createdAt,
 			0,
 			0);
