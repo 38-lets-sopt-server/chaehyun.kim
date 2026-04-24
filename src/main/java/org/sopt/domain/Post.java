@@ -4,10 +4,10 @@ public class Post {
 	private final Long id;
 	private String title;
 	private String content;
-	private final String author;
+	private String author;
 	private final String createdAt;
-	private final int commentCount;
-	private final int likeCount;
+	private int commentCount;
+	private int likeCount;
 
 	public Post(Long id, String title, String content, String author, String createdAt, int commentCount, int likeCount) {
 		this.id = id;
