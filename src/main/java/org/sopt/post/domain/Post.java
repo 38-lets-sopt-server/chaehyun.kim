@@ -1,7 +1,5 @@
 package org.sopt.post.domain;
 
-import java.time.LocalDateTime;
-
 import org.sopt.common.domain.BaseTimeEntity;
 import org.sopt.common.enums.BoardType;
 import org.sopt.user.domain.User;
@@ -29,7 +27,6 @@ public class Post extends BaseTimeEntity {
 	protected Post() {}
 
 	private int commentCount;
-	private int likeCount;
 	private Boolean isAnonymous;
 
 	public Post(BoardType boardType, String title, String content, User user, Boolean isAnonymous) {
@@ -37,7 +34,6 @@ public class Post extends BaseTimeEntity {
 		this.title = title;
 		this.content = content;
 		this.commentCount = 0;
-		this.likeCount = 0;
 		this.user = user;
 		this.isAnonymous = isAnonymous;
 	}
@@ -54,21 +50,11 @@ public class Post extends BaseTimeEntity {
 
 	public int getCommentCount() { return commentCount; }
 
-	public int getLikeCount() { return likeCount; }
-
 	public Boolean getIsAnonymous() {  return isAnonymous; }
 
 	public void update(String title, String content) {
 		this.title = title;
 		this.content = content;
-	}
-
-	public void increaseLikeCount() { this.likeCount++; }
-
-	public void decreaseLikeCount() {
-		if (this.likeCount > 0) {
-			this.likeCount--;
-		}
 	}
 
 	// TODO: 댓글 로직 구현

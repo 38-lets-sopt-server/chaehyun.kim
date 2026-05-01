@@ -5,6 +5,7 @@ import java.util.List;
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.exception.BusinessException;
 import org.sopt.common.exception.ErrorCode;
+import org.sopt.like.repository.LikeRepository;
 import org.sopt.post.domain.Post;
 import org.sopt.post.dto.request.CreatePostRequest;
 import org.sopt.post.dto.request.UpdatePostRequest;
@@ -27,10 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
+	private final LikeRepository likeRepository;
 
-	public PostService(PostRepository postRepository, UserRepository userRepository) {
+	public PostService(PostRepository postRepository, UserRepository userRepository, LikeRepository likeRepository) {
 		this.postRepository = postRepository;
 		this.userRepository = userRepository;
+		this.likeRepository = likeRepository;
 	}
 
 	@Transactional
@@ -57,7 +60,10 @@ public class PostService {
 		Page<Post> postPage = postRepository.findAllByBoardTypeOrderByCreatedAtDesc(boardType, pageable);
 
 		List<PostResponse> posts = postPage.getContent().stream()
-			.map(PostResponse::from)
+			.map(post -> {
+				long likeCount = likeRepository.countByPost(post);
+				return PostResponse.from(post, likeCount);
+			})
 			.toList();
 
 		return PostListResponse.of(
@@ -71,8 +77,9 @@ public class PostService {
 	public PostResponse getPost(Long id) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
+		long likeCount = likeRepository.countByPost(post);
 
-		return PostResponse.from(post);
+		return PostResponse.from(post, likeCount);
 	}
 
 	@Transactional

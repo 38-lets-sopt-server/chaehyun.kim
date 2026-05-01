@@ -31,17 +31,15 @@ public class LikeService {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+			.orElseThrow(() -> new PostNotFoundException(postId));
 
 		Optional<Like> like = likeRepository.findByUserAndPost(user, post);
 
 		if (like.isPresent()) {
 			likeRepository.delete(like.get());
-			post.decreaseLikeCount();
 			return false;
 		} else {
 			likeRepository.save(new Like(user, post));
-			post.increaseLikeCount();
 			return true;
 		}
 	}
