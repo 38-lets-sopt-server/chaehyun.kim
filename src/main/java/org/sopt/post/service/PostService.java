@@ -1,0 +1,93 @@
+package org.sopt.post.service;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
+import java.util.List;
+
+import org.sopt.common.enums.BoardType;
+import org.sopt.common.exception.BusinessException;
+import org.sopt.common.exception.ErrorCode;
+import org.sopt.post.exception.PostNotFoundException;
+import org.sopt.post.validator.PostValidator;
+import org.sopt.post.domain.Post;
+import org.sopt.post.dto.request.UpdatePostRequest;
+import org.sopt.post.dto.response.PostListResponse;
+import org.sopt.post.repository.PostRepository;
+import org.sopt.post.dto.request.CreatePostRequest;
+import org.sopt.post.dto.response.CreatePostResponse;
+import org.sopt.post.dto.response.PostResponse;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PostService {
+	private final PostRepository postRepository;
+
+	public PostService(PostRepository postRepository) {
+		this.postRepository = postRepository;
+	}
+
+	public CreatePostResponse createPost(CreatePostRequest request) {
+		PostValidator.validateCreate(request);
+
+		Post post = new Post(
+			postRepository.generateId(),
+			request.boardType(),
+			request.title(),
+			request.content(),
+			request.author(),
+			LocalDateTime.now(),
+			request.isAnonymous()
+		);
+		postRepository.save(post);
+		return new CreatePostResponse(post.getId());
+	}
+
+	public PostListResponse getAllPosts(BoardType boardType, int page, int size) {
+		List<Post> filteredPosts = postRepository.findAll().stream()
+			.filter(post -> post.getBoardType() == boardType)
+			.sorted((p1, p2) -> p2.getId().compareTo(p1.getId()))
+			.toList();
+
+		long totalCount = filteredPosts.size();
+		int totalPages = (int) Math.ceil((double) totalCount / size);
+		boolean hasNext = totalCount > (long) (page + 1) * size;
+
+		List<PostResponse> posts = filteredPosts.stream()
+			.skip((long) page * size)
+			.limit(size)
+			.map(PostResponse::from)
+			.collect(Collectors.toList());
+
+		return PostListResponse.of(posts, totalCount, totalPages, hasNext);
+	}
+
+	public PostResponse getPost(Long id) {
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new PostNotFoundException(id));
+
+		return PostResponse.from(post);
+	}
+
+	public void updatePost(Long id, UpdatePostRequest request) {
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new PostNotFoundException(id));
+
+		if (!post.getAuthor().equals(request.author())) {
+			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
+		}
+
+		PostValidator.validateUpdate(request.title(), request.content());
+		post.update(request.title(), request.content());
+	}
+
+	public void deletePost(Long id, String author) {
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new PostNotFoundException(id));
+
+		if (!post.getAuthor().equals(author)) {
+			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
+		}
+
+		postRepository.delete(post);
+	}
+}
