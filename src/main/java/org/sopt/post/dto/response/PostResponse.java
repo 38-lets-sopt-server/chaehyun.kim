@@ -30,7 +30,7 @@ public record PostResponse(
 			post.getBoardType(),
 			post.getTitle(),
 			post.getContent(),
-			post.getIsAnonymous() ? "익명" : post.getAuthorName(),
+			post.getIsAnonymous() ? "익명" : post.getUser().getName(),
 			post.getCreatedAt().format(DateTimeUtils.FORMATTER),
 			post.getLikeCount(),
 			post.getCommentCount()

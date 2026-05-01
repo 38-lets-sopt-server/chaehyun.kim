@@ -50,7 +50,7 @@ public class Post extends BaseTimeEntity {
 
 	public String getContent() { return content; }
 
-	public String getAuthorName() { return this.user.getName(); }
+	public User getUser() { return user; }
 
 	public int getCommentCount() { return commentCount; }
 
