@@ -1,7 +1,7 @@
 package org.sopt.common.validator;
 
 import org.sopt.common.exception.BusinessException;
-import org.sopt.common.exception.ErrorCode;
+import org.sopt.common.response.ErrorCode;
 import org.sopt.dto.request.CreatePostRequest;
 
 public class PostValidator {

@@ -1,15 +1,14 @@
 package org.sopt.controller;
-import java.util.List;
 
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.response.CustomAPIResponse;
+import org.sopt.common.response.SuccessStatus;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.PostListResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.service.PostService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-	private PostService postService;
+	private final PostService postService;
 
 	public PostController(PostService postService) {
 		this.postService = postService;
@@ -35,13 +34,9 @@ public class PostController {
 		@RequestBody CreatePostRequest request
 	) {
 		CreatePostResponse response = postService.createPost(request);
-		return ResponseEntity.ok(
-			CustomAPIResponse.createSuccess(
-				HttpStatus.CREATED.value(),
-				"게시글 작성 성공",
-				response
-			)
-		);
+		return ResponseEntity
+			.status(SuccessStatus.CREATE_POST_SUCCESS.getStatus())
+			.body(CustomAPIResponse.createSuccess(SuccessStatus.CREATE_POST_SUCCESS, response));
 	}
 
 	@GetMapping
@@ -52,25 +47,18 @@ public class PostController {
 	) {
 		PostListResponse response = postService.getAllPosts(boardType, page, size);
 
-		return ResponseEntity.ok(
-			CustomAPIResponse.createSuccess(
-				HttpStatus.OK.value(),
-				"게시글 목록 조회 성공",
-				response
-			)
-		);
+		return ResponseEntity
+			.status(SuccessStatus.GET_POST_LIST_SUCCESS.getStatus())
+			.body(CustomAPIResponse.createSuccess(SuccessStatus.GET_POST_LIST_SUCCESS, response));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<PostResponse>> getPost(@PathVariable Long id) {
 		PostResponse response = postService.getPost(id);
-		return ResponseEntity.ok(
-			CustomAPIResponse.createSuccess(
-				HttpStatus.OK.value(),
-				"게시글 조회 성공",
-				response
-			)
-		);
+
+		return ResponseEntity
+			.status(SuccessStatus.GET_POST_SUCCESS.getStatus())
+			.body(CustomAPIResponse.createSuccess(SuccessStatus.GET_POST_SUCCESS, response));
 	}
 
 	@PutMapping("/{id}")
@@ -80,13 +68,9 @@ public class PostController {
 	) {
 		postService.updatePost(id, request);
 
-		return ResponseEntity.ok(
-			CustomAPIResponse.createSuccess(
-				HttpStatus.OK.value(),
-				"게시글 수정 성공",
-				null
-			)
-		);
+		return ResponseEntity
+			.status(SuccessStatus.UPDATE_POST_SUCCESS.getStatus())
+			.body(CustomAPIResponse.createSuccess(SuccessStatus.UPDATE_POST_SUCCESS, null));
 	}
 
 	@DeleteMapping("/{id}")
@@ -96,12 +80,8 @@ public class PostController {
 	) {
 		postService.deletePost(id, author);
 
-		return ResponseEntity.ok(
-			CustomAPIResponse.createSuccess(
-				HttpStatus.OK.value(),
-				"게시글 삭제 성공",
-				null
-			)
-		);
+		return ResponseEntity
+			.status(SuccessStatus.DELETE_POST_SUCCESS.getStatus())
+			.body(CustomAPIResponse.createSuccess(SuccessStatus.DELETE_POST_SUCCESS, null));
 	}
 }

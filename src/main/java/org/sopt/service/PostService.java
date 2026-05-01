@@ -1,5 +1,4 @@
 package org.sopt.service;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,7 +6,7 @@ import java.util.List;
 
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.exception.BusinessException;
-import org.sopt.common.exception.ErrorCode;
+import org.sopt.common.response.ErrorCode;
 import org.sopt.common.exception.PostNotFoundException;
 import org.sopt.common.validator.PostValidator;
 import org.sopt.domain.Post;

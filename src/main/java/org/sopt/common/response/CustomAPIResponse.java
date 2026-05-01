@@ -6,8 +6,8 @@ public record CustomAPIResponse<T>(
 	T data
 ) {
 	// 성공
-	public static <T> CustomAPIResponse<T> createSuccess(int status, String message, T data) {
-		return new CustomAPIResponse<T>(String.valueOf(status), message, data);
+	public static <T> CustomAPIResponse<T> createSuccess(SuccessStatus status, T data) {
+		return new CustomAPIResponse<T>(String.valueOf(status.getStatus().value()), status.getMessage(), data);
 	}
 
 	// 실패
