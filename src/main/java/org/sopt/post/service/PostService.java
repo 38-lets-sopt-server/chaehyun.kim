@@ -1,47 +1,55 @@
 package org.sopt.post.service;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.stream.Collectors;
 import java.util.List;
 
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.exception.BusinessException;
 import org.sopt.common.exception.ErrorCode;
-import org.sopt.post.exception.PostNotFoundException;
-import org.sopt.post.validator.PostValidator;
 import org.sopt.post.domain.Post;
-import org.sopt.post.dto.request.UpdatePostRequest;
-import org.sopt.post.dto.response.PostListResponse;
-import org.sopt.post.repository.PostRepository;
 import org.sopt.post.dto.request.CreatePostRequest;
+import org.sopt.post.dto.request.UpdatePostRequest;
 import org.sopt.post.dto.response.CreatePostResponse;
+import org.sopt.post.dto.response.PostListResponse;
 import org.sopt.post.dto.response.PostResponse;
+import org.sopt.post.exception.PostNotFoundException;
+import org.sopt.post.repository.PostRepository;
+import org.sopt.post.validator.PostValidator;
+import org.sopt.user.domain.User;
+
+import org.sopt.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
 	private final PostRepository postRepository;
+	private final UserRepository userRepository;
 
-	public PostService(PostRepository postRepository) {
+	public PostService(PostRepository postRepository, UserRepository userRepository) {
 		this.postRepository = postRepository;
+		this.userRepository = userRepository;
 	}
 
+	@Transactional
 	public CreatePostResponse createPost(CreatePostRequest request) {
+		User user = userRepository.findById(request.userId())
+			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
 		PostValidator.validateCreate(request);
 
 		Post post = new Post(
-			postRepository.generateId(),
 			request.boardType(),
 			request.title(),
 			request.content(),
-			request.author(),
-			LocalDateTime.now(),
+			user,
 			request.isAnonymous()
 		);
 		postRepository.save(post);
 		return new CreatePostResponse(post.getId());
 	}
 
+	@Transactional(readOnly = true)
 	public PostListResponse getAllPosts(BoardType boardType, int page, int size) {
 		List<Post> filteredPosts = postRepository.findAll().stream()
 			.filter(post -> post.getBoardType() == boardType)
@@ -61,6 +69,7 @@ public class PostService {
 		return PostListResponse.of(posts, totalCount, totalPages, hasNext);
 	}
 
+	@Transactional(readOnly = true)
 	public PostResponse getPost(Long id) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
@@ -68,11 +77,12 @@ public class PostService {
 		return PostResponse.from(post);
 	}
 
+	@Transactional
 	public void updatePost(Long id, UpdatePostRequest request) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getAuthor().equals(request.author())) {
+		if (!post.getAuthorName().equals(request.author())) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 
@@ -84,7 +94,7 @@ public class PostService {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getAuthor().equals(author)) {
+		if (!post.getAuthorName().equals(author)) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 
