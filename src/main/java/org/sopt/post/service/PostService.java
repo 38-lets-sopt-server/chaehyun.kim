@@ -1,4 +1,4 @@
-package org.sopt.service;
+package org.sopt.post.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
@@ -6,16 +6,16 @@ import java.util.List;
 
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.exception.BusinessException;
-import org.sopt.common.response.ErrorCode;
-import org.sopt.common.exception.PostNotFoundException;
-import org.sopt.common.validator.PostValidator;
-import org.sopt.domain.Post;
-import org.sopt.dto.request.UpdatePostRequest;
-import org.sopt.dto.response.PostListResponse;
-import org.sopt.repository.PostRepository;
-import org.sopt.dto.request.CreatePostRequest;
-import org.sopt.dto.response.CreatePostResponse;
-import org.sopt.dto.response.PostResponse;
+import org.sopt.common.exception.ErrorCode;
+import org.sopt.post.exception.PostNotFoundException;
+import org.sopt.post.validator.PostValidator;
+import org.sopt.post.domain.Post;
+import org.sopt.post.dto.request.UpdatePostRequest;
+import org.sopt.post.dto.response.PostListResponse;
+import org.sopt.post.repository.PostRepository;
+import org.sopt.post.dto.request.CreatePostRequest;
+import org.sopt.post.dto.response.CreatePostResponse;
+import org.sopt.post.dto.response.PostResponse;
 import org.springframework.stereotype.Service;
 
 @Service

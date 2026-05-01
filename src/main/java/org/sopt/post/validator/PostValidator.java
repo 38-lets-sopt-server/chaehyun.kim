@@ -1,8 +1,8 @@
-package org.sopt.common.validator;
+package org.sopt.post.validator;
 
 import org.sopt.common.exception.BusinessException;
-import org.sopt.common.response.ErrorCode;
-import org.sopt.dto.request.CreatePostRequest;
+import org.sopt.common.exception.ErrorCode;
+import org.sopt.post.dto.request.CreatePostRequest;
 
 public class PostValidator {
 	private static final int MAX_TITLE_LENGTH = 50;

@@ -1,14 +1,14 @@
-package org.sopt.controller;
+package org.sopt.post.controller;
 
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.common.response.SuccessStatus;
-import org.sopt.dto.request.CreatePostRequest;
-import org.sopt.dto.request.UpdatePostRequest;
-import org.sopt.dto.response.CreatePostResponse;
-import org.sopt.dto.response.PostListResponse;
-import org.sopt.dto.response.PostResponse;
-import org.sopt.service.PostService;
+import org.sopt.post.dto.request.CreatePostRequest;
+import org.sopt.post.dto.request.UpdatePostRequest;
+import org.sopt.post.dto.response.CreatePostResponse;
+import org.sopt.post.dto.response.PostListResponse;
+import org.sopt.post.dto.response.PostResponse;
+import org.sopt.post.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

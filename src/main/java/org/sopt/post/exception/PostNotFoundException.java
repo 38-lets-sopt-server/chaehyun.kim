@@ -1,6 +1,7 @@
-package org.sopt.common.exception;
+package org.sopt.post.exception;
 
-import org.sopt.common.response.ErrorCode;
+import org.sopt.common.exception.BusinessException;
+import org.sopt.common.exception.ErrorCode;
 
 public class PostNotFoundException extends BusinessException {
 	public PostNotFoundException(Long id) {

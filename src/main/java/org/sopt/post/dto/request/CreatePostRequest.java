@@ -1,4 +1,4 @@
-package org.sopt.dto.request;
+package org.sopt.post.dto.request;
 
 import org.sopt.common.enums.BoardType;
 

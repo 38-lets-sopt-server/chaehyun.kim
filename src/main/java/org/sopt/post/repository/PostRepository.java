@@ -1,10 +1,10 @@
-package org.sopt.repository;
+package org.sopt.post.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.sopt.domain.Post;
+import org.sopt.post.domain.Post;
 import org.springframework.stereotype.Repository;
 
 @Repository

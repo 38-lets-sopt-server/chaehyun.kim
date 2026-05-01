@@ -1,4 +1,4 @@
-package org.sopt.domain;
+package org.sopt.post.domain;
 
 import org.sopt.common.enums.BoardType;
 
