@@ -10,16 +10,13 @@ import org.sopt.post.dto.response.PostListResponse;
 import org.sopt.post.dto.response.PostResponse;
 import org.sopt.post.service.PostService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Post", description = "게시글 관련 API")
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -29,6 +26,7 @@ public class PostController {
 		this.postService = postService;
 	}
 
+	@Operation(summary = "게시글 생성", description = "새로운 게시글을 작성합니다.")
 	@PostMapping
 	public ResponseEntity<CustomAPIResponse<CreatePostResponse>> createPost(
 		@RequestBody CreatePostRequest request
@@ -39,11 +37,12 @@ public class PostController {
 			.body(CustomAPIResponse.createSuccess(SuccessStatus.CREATE_POST_SUCCESS, response));
 	}
 
+	@Operation(summary = "게시글 목록 조회", description = "게시판 타입별로 페이징된 게시글 목록을 조회합니다.")
 	@GetMapping
 	public ResponseEntity<CustomAPIResponse<PostListResponse>> getAllPosts(
-		@RequestParam(defaultValue = "FREE") BoardType boardType,
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "10") int size
+		@Parameter(description = "게시판 타입 (기본값: FREE)") @RequestParam(defaultValue = "FREE") BoardType boardType,
+		@Parameter(description = "페이지 번호 (0부터 시작)") @RequestParam(defaultValue = "0") int page,
+		@Parameter(description = "한 페이지당 게시글 수") @RequestParam(defaultValue = "10") int size
 	) {
 		PostListResponse response = postService.getAllPosts(boardType, page, size);
 
@@ -52,8 +51,9 @@ public class PostController {
 			.body(CustomAPIResponse.createSuccess(SuccessStatus.GET_POST_LIST_SUCCESS, response));
 	}
 
+	@Operation(summary = "게시글 상세 조회", description = "특정 ID의 게시글 상세 정보를 조회합니다.")
 	@GetMapping("/{id}")
-	public ResponseEntity<CustomAPIResponse<PostResponse>> getPost(@PathVariable Long id) {
+	public ResponseEntity<CustomAPIResponse<PostResponse>> getPost(@Parameter(description = "조회할 게시글 ID") @PathVariable Long id) {
 		PostResponse response = postService.getPost(id);
 
 		return ResponseEntity
@@ -61,9 +61,10 @@ public class PostController {
 			.body(CustomAPIResponse.createSuccess(SuccessStatus.GET_POST_SUCCESS, response));
 	}
 
+	@Operation(summary = "게시글 수정", description = "게시글의 제목과 내용을 수정합니다.")
 	@PutMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<Void>> updatePost(
-		@PathVariable Long id,
+		@Parameter(description = "수정할 게시글 ID") @PathVariable Long id,
 		@RequestBody UpdatePostRequest request
 	) {
 		postService.updatePost(id, request);
@@ -73,10 +74,11 @@ public class PostController {
 			.body(CustomAPIResponse.createSuccess(SuccessStatus.UPDATE_POST_SUCCESS, null));
 	}
 
+	@Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<Void>> deletePost(
-		@PathVariable Long id,
-		@RequestParam String author
+		@Parameter(description = "삭제할 게시글 ID") @PathVariable Long id,
+		@Parameter(description = "작성자 이름 (검증용)") @RequestParam String author
 	) {
 		postService.deletePost(id, author);
 

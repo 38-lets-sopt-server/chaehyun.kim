@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    include: local
+
+  application:
+    name: assignment
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    show-sql: true
