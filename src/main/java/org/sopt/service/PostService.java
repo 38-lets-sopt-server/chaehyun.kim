@@ -1,4 +1,5 @@
 package org.sopt.service;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,23 +45,19 @@ public class PostService {
 		return new CreatePostResponse(post.getId());
 	}
 
-	public PostListResponse getAllPosts(BoardType boardType, Integer page, Integer size) {
-		BoardType finalBoardType = Optional.ofNullable(boardType).orElse(BoardType.FREE);
-		int finalPage = Optional.ofNullable(page).orElse(0);
-		int finalSize = Optional.ofNullable(size).orElse(10);
-
+	public PostListResponse getAllPosts(BoardType boardType, int page, int size) {
 		List<Post> filteredPosts = postRepository.findAll().stream()
-			.filter(post -> post.getBoardType() == finalBoardType)
+			.filter(post -> post.getBoardType() == boardType)
 			.sorted((p1, p2) -> p2.getId().compareTo(p1.getId()))
 			.toList();
 
 		long totalCount = filteredPosts.size();
-		int totalPages = (int) Math.ceil((double) totalCount / finalSize);
-		boolean hasNext = totalCount > (long) (finalPage + 1) * finalSize;
+		int totalPages = (int) Math.ceil((double) totalCount / size);
+		boolean hasNext = totalCount > (long) (page + 1) * size;
 
 		List<PostResponse> posts = filteredPosts.stream()
-			.skip((long) finalPage * finalSize)
-			.limit(finalSize)
+			.skip((long) page * size)
+			.limit(size)
 			.map(PostResponse::from)
 			.collect(Collectors.toList());
 

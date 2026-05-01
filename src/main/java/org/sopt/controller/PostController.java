@@ -41,9 +41,9 @@ public class PostController {
 
 	@GetMapping
 	public ResponseEntity<CustomAPIResponse<PostListResponse>> getAllPosts(
-		@RequestParam(required = false) BoardType boardType,
-		@RequestParam(required = false) Integer page,
-		@RequestParam(required = false) Integer size
+		@RequestParam(defaultValue = "FREE") BoardType boardType,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
 	) {
 		PostListResponse response = postService.getAllPosts(boardType, page, size);
 
