@@ -1,5 +1,6 @@
 package org.sopt.post.domain;
 
+import org.hibernate.annotations.Formula;
 import org.sopt.common.domain.BaseTimeEntity;
 import org.sopt.common.enums.BoardType;
 import org.sopt.user.domain.User;
@@ -26,6 +27,8 @@ public class Post extends BaseTimeEntity {
 
 	protected Post() {}
 
+	@Formula("(select count(1) from likes l where l.post_id = id)")
+	private int likeCount;
 	private int commentCount;
 	private Boolean isAnonymous;
 
@@ -47,6 +50,8 @@ public class Post extends BaseTimeEntity {
 	public String getContent() { return content; }
 
 	public User getUser() { return user; }
+
+	public int getLikeCount() { return likeCount; }
 
 	public int getCommentCount() { return commentCount; }
 

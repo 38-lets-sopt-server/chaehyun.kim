@@ -57,13 +57,14 @@ public class PostService {
 	@Transactional(readOnly = true)
 	public PostListResponse getAllPosts(BoardType boardType, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Post> postPage = postRepository.findAllByBoardTypeOrderByCreatedAtDesc(boardType, pageable);
+		Page<Post> postPage = postRepository.findAllByBoardTypeWithUser(boardType, pageable);
 
 		List<PostResponse> posts = postPage.getContent().stream()
-			.map(post -> {
-				long likeCount = likeRepository.countByPost(post);
-				return PostResponse.from(post, likeCount);
-			})
+			// .map(post -> {
+			// 	long likeCount = likeRepository.countByPost(post);
+			// 	return PostResponse.from(post, likeCount);
+			// })
+			.map(PostResponse::from)
 			.toList();
 
 		return PostListResponse.of(
@@ -77,9 +78,9 @@ public class PostService {
 	public PostResponse getPost(Long id) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
-		long likeCount = likeRepository.countByPost(post);
+		// long likeCount = likeRepository.countByPost(post);
 
-		return PostResponse.from(post, likeCount);
+		return PostResponse.from(post);
 	}
 
 	@Transactional

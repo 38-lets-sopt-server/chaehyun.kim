@@ -24,7 +24,7 @@ public record PostResponse(
 	@Schema(description = "댓글 수", example = "5")
 	int commentCount
 ) {
-	public static PostResponse from(Post post, long likeCount) {
+	public static PostResponse from(Post post) {
 		return new PostResponse(
 			post.getId(),
 			post.getBoardType(),
@@ -32,7 +32,7 @@ public record PostResponse(
 			post.getContent(),
 			post.getIsAnonymous() ? "익명" : post.getUser().getName(),
 			post.getCreatedAt().format(DateTimeUtils.FORMATTER),
-			(int) likeCount,
+			post.getLikeCount(),
 			post.getCommentCount()
 		);
 	}
