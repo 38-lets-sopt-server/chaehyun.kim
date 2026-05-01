@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 		ErrorCode errorCode = e.getErrorCode();
 
 		return ResponseEntity
-			.status(HttpStatus.valueOf(errorCode.getCode() / 100))
+			.status(errorCode.getStatus())
 			.body(CustomAPIResponse.createFail(
 				errorCode.getCode(),
 				e.getMessage()
