@@ -1,7 +1,6 @@
 package org.sopt.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -31,15 +30,16 @@ public class PostService {
 	public CreatePostResponse createPost(CreatePostRequest request) {
 		PostValidator.validateCreate(request);
 
-		String finalAuthor = request.isAnonymous() ? "익명" : request.author();
 		String createdAt = LocalDateTime.now().format(FORMATTER);
+
 		Post post = new Post(
 			postRepository.generateId(),
 			request.boardType(),
 			request.title(),
 			request.content(),
-			finalAuthor,
-			createdAt
+			request.author(),
+			createdAt,
+			request.isAnonymous()
 		);
 		postRepository.save(post);
 		return new CreatePostResponse(post.getId());

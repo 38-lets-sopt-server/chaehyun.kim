@@ -11,14 +11,16 @@ public class Post {
 	private final String createdAt;
 	private int commentCount;
 	private int likeCount;
+	private Boolean isAnonymous;
 
-	public Post(Long id, BoardType boardType, String title, String content, String author, String createdAt) {
+	public Post(Long id, BoardType boardType, String title, String content, String author, String createdAt, Boolean isAnonymous) {
 		this.id = id;
 		this.boardType = boardType;
 		this.title = title;
 		this.content = content;
 		this.author = author;
 		this.createdAt = createdAt;
+		this.isAnonymous = isAnonymous;
 		this.commentCount = 0;
 		this.likeCount = 0;
 	}
@@ -52,6 +54,8 @@ public class Post {
 	public int getLikeCount() {
 		return likeCount;
 	}
+
+	public Boolean getIsAnonymous() {  return isAnonymous; }
 
 	public void update(String title, String content) {
 		this.title = title;
