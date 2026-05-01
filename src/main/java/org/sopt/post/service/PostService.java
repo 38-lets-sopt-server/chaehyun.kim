@@ -1,6 +1,5 @@
 package org.sopt.post.service;
 
-import java.util.stream.Collectors;
 import java.util.List;
 
 import org.sopt.common.enums.BoardType;
@@ -18,6 +17,9 @@ import org.sopt.post.validator.PostValidator;
 import org.sopt.user.domain.User;
 
 import org.sopt.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,22 +53,18 @@ public class PostService {
 
 	@Transactional(readOnly = true)
 	public PostListResponse getAllPosts(BoardType boardType, int page, int size) {
-		List<Post> filteredPosts = postRepository.findAll().stream()
-			.filter(post -> post.getBoardType() == boardType)
-			.sorted((p1, p2) -> p2.getId().compareTo(p1.getId()))
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Post> postPage = postRepository.findAllByBoardTypeOrderByCreatedAtDesc(boardType, pageable);
+
+		List<PostResponse> posts = postPage.getContent().stream()
+			.map(PostResponse::from)
 			.toList();
 
-		long totalCount = filteredPosts.size();
-		int totalPages = (int) Math.ceil((double) totalCount / size);
-		boolean hasNext = totalCount > (long) (page + 1) * size;
-
-		List<PostResponse> posts = filteredPosts.stream()
-			.skip((long) page * size)
-			.limit(size)
-			.map(PostResponse::from)
-			.collect(Collectors.toList());
-
-		return PostListResponse.of(posts, totalCount, totalPages, hasNext);
+		return PostListResponse.of(
+			posts,
+			postPage.getTotalElements(),
+			postPage.getTotalPages(),
+			postPage.hasNext());
 	}
 
 	@Transactional(readOnly = true)
