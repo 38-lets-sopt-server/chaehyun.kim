@@ -61,8 +61,4 @@ public class Post {
 	// TODO: 좋아요, 댓글 로직 구현
 	public void increaseLikeCount() { this.likeCount++; }
 	public void increaseCommentCount() { this.commentCount++; }
-
-	public String getInfo() {
-		return "[" + id + "] " + title + " - " + author + " (" + createdAt + ")\n" + content;
-	}
 }
