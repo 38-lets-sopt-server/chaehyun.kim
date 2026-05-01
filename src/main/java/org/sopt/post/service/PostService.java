@@ -82,7 +82,7 @@ public class PostService {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getAuthorName().equals(request.author())) {
+		if (!post.getAuthorName().equals(request.userId())) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 
@@ -90,11 +90,11 @@ public class PostService {
 		post.update(request.title(), request.content());
 	}
 
-	public void deletePost(Long id, String author) {
+	public void deletePost(Long id, Long userId) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getAuthorName().equals(author)) {
+		if (!post.getAuthorName().equals(userId)) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 

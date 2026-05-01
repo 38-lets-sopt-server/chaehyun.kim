@@ -78,9 +78,9 @@ public class PostController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<Void>> deletePost(
 		@Parameter(description = "삭제할 게시글 ID") @PathVariable Long id,
-		@Parameter(description = "작성자 이름 (검증용)") @RequestParam String author
+		@Parameter(description = "작성자 ID (검증용)") @RequestParam Long userId
 	) {
-		postService.deletePost(id, author);
+		postService.deletePost(id, userId);
 
 		return ResponseEntity
 			.status(SuccessStatus.DELETE_POST_SUCCESS.getStatus())
