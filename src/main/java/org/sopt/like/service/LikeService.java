@@ -36,7 +36,7 @@ public class LikeService {
 		}
 
 		likeRepository.save(new Like(user, post));
-		// TODO: Post에도 반영하기
+		post.increaseLikeCount();
 	}
 
 	@Transactional
@@ -50,6 +50,6 @@ public class LikeService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.LIKE_NOT_FOUND));
 
 		likeRepository.delete(like);
-		// TODO: Post에도 반영하기
+		post.decreaseLikeCount();
 	}
 }
