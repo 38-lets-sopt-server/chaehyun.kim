@@ -1,5 +1,7 @@
 package org.sopt.post.domain;
 
+import java.time.LocalDateTime;
+
 import org.sopt.common.enums.BoardType;
 
 public class Post {
@@ -8,12 +10,12 @@ public class Post {
 	private String title;
 	private String content;
 	private String author;
-	private final String createdAt;
+	private final LocalDateTime createdAt;
 	private int commentCount;
 	private int likeCount;
 	private Boolean isAnonymous;
 
-	public Post(Long id, BoardType boardType, String title, String content, String author, String createdAt, Boolean isAnonymous) {
+	public Post(Long id, BoardType boardType, String title, String content, String author, LocalDateTime createdAt, Boolean isAnonymous) {
 		this.id = id;
 		this.boardType = boardType;
 		this.title = title;
@@ -43,7 +45,7 @@ public class Post {
 		return author;
 	}
 
-	public String getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 

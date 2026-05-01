@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 	private final PostRepository postRepository;
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	public PostService(PostRepository postRepository) {
 		this.postRepository = postRepository;
@@ -30,15 +29,13 @@ public class PostService {
 	public CreatePostResponse createPost(CreatePostRequest request) {
 		PostValidator.validateCreate(request);
 
-		String createdAt = LocalDateTime.now().format(FORMATTER);
-
 		Post post = new Post(
 			postRepository.generateId(),
 			request.boardType(),
 			request.title(),
 			request.content(),
 			request.author(),
-			createdAt,
+			LocalDateTime.now(),
 			request.isAnonymous()
 		);
 		postRepository.save(post);
