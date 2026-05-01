@@ -7,7 +7,10 @@ public enum SuccessStatus {
 	GET_POST_LIST_SUCCESS(HttpStatus.OK, "게시글 목록 조회 성공"),
 	GET_POST_SUCCESS(HttpStatus.OK, "게시글 조회 성공"),
 	UPDATE_POST_SUCCESS(HttpStatus.NO_CONTENT, "게시글 수정 성공"),
-	DELETE_POST_SUCCESS(HttpStatus.NO_CONTENT, "게시글 삭제 성공");
+	DELETE_POST_SUCCESS(HttpStatus.NO_CONTENT, "게시글 삭제 성공"),
+
+	CLICK_LIKE_SUCCESS(HttpStatus.OK, "좋아요가 반영되었습니다."),
+	CANCEL_LIKE_SUCCESS(HttpStatus.OK, "좋아요가 취소되었습니다.");
 
 	private final HttpStatus status;
 	private final String message;

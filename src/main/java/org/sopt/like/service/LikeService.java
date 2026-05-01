@@ -1,5 +1,7 @@
 package org.sopt.like.service;
 
+import java.util.Optional;
+
 import org.sopt.common.exception.BusinessException;
 import org.sopt.common.exception.ErrorCode;
 import org.sopt.like.domain.Like;
@@ -25,31 +27,22 @@ public class LikeService {
 	}
 
 	@Transactional
-	public void addLike(Long userId, Long postId) {
+	public boolean toggleLike(Long userId, Long postId) {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new PostNotFoundException(postId));
+			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
-		if (likeRepository.existsByUserAndPost(user, post)) {
-			throw new BusinessException(ErrorCode.ALREADY_LIKED);
+		Optional<Like> like = likeRepository.findByUserAndPost(user, post);
+
+		if (like.isPresent()) {
+			likeRepository.delete(like.get());
+			post.decreaseLikeCount();
+			return false;
+		} else {
+			likeRepository.save(new Like(user, post));
+			post.increaseLikeCount();
+			return true;
 		}
-
-		likeRepository.save(new Like(user, post));
-		post.increaseLikeCount();
-	}
-
-	@Transactional
-	public void cancelLike(Long userId, Long postId) {
-		User user = userRepository.findById(userId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
-		Post post = postRepository.findById(postId)
-			.orElseThrow(() -> new PostNotFoundException(postId));
-
-		Like like = likeRepository.findByUserAndPost(user, post)
-			.orElseThrow(() -> new BusinessException(ErrorCode.LIKE_NOT_FOUND));
-
-		likeRepository.delete(like);
-		post.decreaseLikeCount();
 	}
 }
