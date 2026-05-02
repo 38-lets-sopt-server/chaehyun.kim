@@ -1,61 +1,59 @@
 package org.sopt.post.domain;
 
-import java.time.LocalDateTime;
-
+import org.hibernate.annotations.Formula;
+import org.sopt.common.domain.BaseTimeEntity;
 import org.sopt.common.enums.BoardType;
+import org.sopt.user.domain.User;
 
-public class Post {
-	private final Long id;
-	private final BoardType boardType;
+import jakarta.persistence.*;
+
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+
+@Entity
+public class Post extends BaseTimeEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Enumerated(EnumType.STRING)
+	private BoardType boardType;
 	private String title;
 	private String content;
-	private String author;
-	private final LocalDateTime createdAt;
-	private int commentCount;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	protected Post() {}
+
+	@Formula("(select count(1) from likes l where l.post_id = id)")
 	private int likeCount;
+	private int commentCount;
 	private Boolean isAnonymous;
 
-	public Post(Long id, BoardType boardType, String title, String content, String author, LocalDateTime createdAt, Boolean isAnonymous) {
-		this.id = id;
+	public Post(BoardType boardType, String title, String content, User user, Boolean isAnonymous) {
 		this.boardType = boardType;
 		this.title = title;
 		this.content = content;
-		this.author = author;
-		this.createdAt = createdAt;
-		this.isAnonymous = isAnonymous;
 		this.commentCount = 0;
-		this.likeCount = 0;
+		this.user = user;
+		this.isAnonymous = isAnonymous;
 	}
 
-	public Long getId() {
-		return id;
-	}
+	public Long getId() { return id; }
 
 	public BoardType getBoardType() { return boardType; }
 
-	public String getTitle() {
-		return title;
-	}
+	public String getTitle() { return title; }
 
-	public String getContent() {
-		return content;
-	}
+	public String getContent() { return content; }
 
-	public String getAuthor() {
-		return author;
-	}
+	public User getUser() { return user; }
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
+	public int getLikeCount() { return likeCount; }
 
-	public int getCommentCount() {
-		return commentCount;
-	}
-
-	public int getLikeCount() {
-		return likeCount;
-	}
+	public int getCommentCount() { return commentCount; }
 
 	public Boolean getIsAnonymous() {  return isAnonymous; }
 
@@ -64,7 +62,7 @@ public class Post {
 		this.content = content;
 	}
 
-	// TODO: 좋아요, 댓글 로직 구현
-	public void increaseLikeCount() { this.likeCount++; }
+	// TODO: 댓글 로직 구현
 	public void increaseCommentCount() { this.commentCount++; }
+
 }

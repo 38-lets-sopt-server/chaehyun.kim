@@ -13,7 +13,6 @@ public class PostValidator {
 		requireNotBlank(request.title(), ErrorCode.INVALID_POST_TITLE);
 		requireValidLength(request.title(), MAX_TITLE_LENGTH, ErrorCode.INVALID_POST_TITLE);
 		requireNotBlank(request.content(), ErrorCode.INVALID_POST_CONTENT);
-		requireNotBlank(request.author(), ErrorCode.INVALID_POST_AUTHOR);
 	}
 
 	private static void requireNotNull(Object value, ErrorCode errorCode) {
