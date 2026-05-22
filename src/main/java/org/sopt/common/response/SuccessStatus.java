@@ -3,6 +3,8 @@ package org.sopt.common.response;
 import org.springframework.http.HttpStatus;
 
 public enum SuccessStatus {
+	LOGIN_SUCCESS(HttpStatus.OK, "로그인 성공"),
+
 	CREATE_POST_SUCCESS(HttpStatus.CREATED, "게시글 작성 성공"),
 	GET_POST_LIST_SUCCESS(HttpStatus.OK, "게시글 목록 조회 성공"),
 	GET_POST_SUCCESS(HttpStatus.OK, "게시글 조회 성공"),
