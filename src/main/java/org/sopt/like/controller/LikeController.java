@@ -4,6 +4,7 @@ import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.common.response.SuccessStatus;
 import org.sopt.like.service.LikeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,9 @@ public class LikeController {
 	@PatchMapping("/posts/{postId}") // PATCH 사용!
 	public ResponseEntity<CustomAPIResponse<Void>> toggleLike(
 		@PathVariable Long postId,
-		@RequestParam Long userId) {
+		Authentication authentication
+	) {
+		Long userId = Long.parseLong(authentication.getName());
 
 		boolean isLiked = likeService.toggleLike(userId, postId);
 
