@@ -17,7 +17,7 @@ public class RefreshToken {
 	private Long id;
 
 	@Column(nullable = false)
-	private Long memberId;
+	private Long userId;
 
 	@Column(nullable = false, unique = true)
 	private String token;
@@ -26,7 +26,7 @@ public class RefreshToken {
 	private LocalDateTime expiresAt;
 
 	private RefreshToken(Long memberId, String token, LocalDateTime expiresAt) {
-		this.memberId = memberId;
+		this.userId = memberId;
 		this.token = token;
 		this.expiresAt = expiresAt;
 	}

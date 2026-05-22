@@ -26,7 +26,7 @@ public class AuthService {
 		User user = userRepository.findByEmail(email)
 			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
-		if (!user.getPassword().equals(password)) {
+		if (!passwordEncoder.matches(password, user.getPassword())) {
 			throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
 		}
 
@@ -41,7 +41,7 @@ public class AuthService {
 		String refreshToken = jwtService.generateRefreshToken(user.id());
 
 		// 기존 Refresh Token 삭제 후 새로 저장
-		refreshTokenRepository.deleteByMemberId(user.id());
+		refreshTokenRepository.deleteByUserId(user.id());
 		refreshTokenRepository.save(
 			RefreshToken.of(user.id(), refreshToken, refreshTokenExpiresInSeconds)
 		);

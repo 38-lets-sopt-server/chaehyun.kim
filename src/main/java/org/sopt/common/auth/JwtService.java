@@ -46,7 +46,7 @@ public class JwtService {
 			.sign(algorithm);
 	}
 
-	public Long verifyAndGetMemberId(String token) {
+	public Long verifyAndGetUserId(String token) {
 		if (token == null || token.isBlank()) {
 			throw new IllegalArgumentException("토큰이 없습니다.");
 		}
