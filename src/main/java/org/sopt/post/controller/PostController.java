@@ -1,5 +1,6 @@
 package org.sopt.post.controller;
 
+import org.sopt.common.auth.UserId;
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.common.response.SuccessStatus;
@@ -31,10 +32,8 @@ public class PostController {
 	@PostMapping
 	public ResponseEntity<CustomAPIResponse<CreatePostResponse>> createPost(
 		@RequestBody CreatePostRequest request,
-		Authentication authentication
+		@UserId Long userId
 	) {
-		Long userId = Long.parseLong(authentication.getName());
-
 		CreatePostResponse response = postService.createPost(request, userId);
 		return ResponseEntity
 			.status(SuccessStatus.CREATE_POST_SUCCESS.getStatus())
@@ -70,9 +69,8 @@ public class PostController {
 	public ResponseEntity<CustomAPIResponse<Void>> updatePost(
 		@Parameter(description = "수정할 게시글 ID") @PathVariable Long id,
 		@RequestBody UpdatePostRequest request,
-		Authentication authentication
+		@UserId Long userId
 	) {
-		Long userId = Long.parseLong(authentication.getName());
 		postService.updatePost(id, request, userId);
 
 		return ResponseEntity
@@ -84,9 +82,8 @@ public class PostController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<Void>> deletePost(
 		@Parameter(description = "삭제할 게시글 ID") @PathVariable Long id,
-		Authentication authentication
+		@UserId Long userId
 	) {
-		Long userId = Long.parseLong(authentication.getName());
 		postService.deletePost(id, userId);
 
 		return ResponseEntity

@@ -11,8 +11,16 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
+import org.sopt.common.auth.UserId;
+import org.springdoc.core.utils.SpringDocUtils;
+
 @Configuration
 public class SwaggerConfig {
+
+	static {
+		SpringDocUtils.getConfig().addAnnotationsToIgnore(UserId.class);
+	}
+
 	@Bean
 	public OpenAPI openAPI() {
 		Server devServer = new Server().url("/").description("개발 서버");
@@ -21,7 +29,6 @@ public class SwaggerConfig {
 		String securityJwtName = "JWT Auth";
 		SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityJwtName);
 
-		// 2. HTTP 헤더의 Authorization: Bearer <토큰> 스펙 정의
 		Components components = new Components()
 			.addSecuritySchemes(securityJwtName, new SecurityScheme()
 				.name(securityJwtName)
