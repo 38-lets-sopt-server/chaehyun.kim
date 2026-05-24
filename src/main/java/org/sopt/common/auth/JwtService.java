@@ -57,4 +57,11 @@ public class JwtService {
 			throw new IllegalArgumentException("JWT의 회원 정보가 올바르지 않습니다.");
 		}
 	}
+
+	public long getTokenRemainingSeconds(String token) {
+		DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
+		long expEpoch = jwt.getExpiresAt().toInstant().getEpochSecond();
+		long remaining = expEpoch - Instant.now().getEpochSecond();
+		return Math.max(0, remaining);
+	}
 }

@@ -18,6 +18,7 @@ public class AuthService {
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
+	private final TokenBlacklistService tokenBlacklistService;
 
 	@Value("${security.jwt.refresh-token-expires-in-seconds:1209600}")
 	private long refreshTokenExpiresInSeconds;
@@ -52,5 +53,16 @@ public class AuthService {
 		User user = userRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 		return UserResponse.from(user);
+	}
+
+	@Transactional
+	public void logout(long userId, String accessToken) {
+		refreshTokenRepository.deleteByUserId(userId);
+
+		long remainingSeconds = jwtService.getTokenRemainingSeconds(accessToken);
+
+		if (remainingSeconds > 0) {
+			tokenBlacklistService.blacklist(accessToken, remainingSeconds);
+		}
 	}
 }
