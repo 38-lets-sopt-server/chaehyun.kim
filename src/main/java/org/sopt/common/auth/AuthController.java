@@ -1,19 +1,24 @@
 package org.sopt.common.auth;
 
+import java.time.Duration;
+
 import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.common.response.SuccessStatus;
 import org.sopt.user.dto.UserLoginRequest;
 import org.sopt.user.dto.UserResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,14 +28,30 @@ public class AuthController {
 
 	private final AuthService authService;
 
+	@Value("${security.cookie.secure:true}")
+	private boolean cookieSecure;
+
 	@Operation(summary = "로그인 (Access Token + Refresh Token 발급)")
 	@PostMapping("/login")
 	public ResponseEntity<CustomAPIResponse<TokenResponse>> login(
-		@RequestBody UserLoginRequest request
+		@RequestBody UserLoginRequest request,
+		HttpServletResponse response
 	) {
-		TokenResponse tokens = authService.login(request.email(), request.password());
+		AuthTokens authTokens = authService.login(request.email(), request.password());
 
-		return ResponseEntity.ok(CustomAPIResponse.createSuccess(SuccessStatus.LOGIN_SUCCESS, tokens));
+		ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", authTokens.refreshToken())
+			.httpOnly(true)
+			.secure(cookieSecure)
+			.path("/api/v1/auth")
+			.maxAge(Duration.ofDays(14))
+			.sameSite("Strict")
+			.build();
+
+		response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+
+		return ResponseEntity.ok(
+			CustomAPIResponse.createSuccess(SuccessStatus.LOGIN_SUCCESS, TokenResponse.of(authTokens.accessToken()))
+		);
 	}
 
 	@Operation(summary = "내 정보 조회 (Access Token 검증)")

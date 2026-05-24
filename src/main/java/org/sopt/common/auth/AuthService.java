@@ -34,19 +34,18 @@ public class AuthService {
 	}
 
 	@Transactional
-	public TokenResponse login(String email, String password) {
+	public AuthTokens login(String email, String password) {
 		UserResponse user = loginWithCredentials(email, password);
 
 		String accessToken = jwtService.generateAccessToken(user.id(), user.email());
 		String refreshToken = jwtService.generateRefreshToken(user.id());
 
-		// 기존 Refresh Token 삭제 후 새로 저장
 		refreshTokenRepository.deleteByUserId(user.id());
 		refreshTokenRepository.save(
 			RefreshToken.of(user.id(), refreshToken, refreshTokenExpiresInSeconds)
 		);
 
-		return TokenResponse.of(accessToken, refreshToken);
+		return new AuthTokens(accessToken, refreshToken);
 	}
 
 	public UserResponse getMemberById(Long memberId) {
