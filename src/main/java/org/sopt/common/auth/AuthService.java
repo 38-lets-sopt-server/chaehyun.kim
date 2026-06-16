@@ -31,7 +31,7 @@ public class AuthService {
 			throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
 		}
 
-		return user.toResponse(user);
+		return new UserResponse(user);
 	}
 
 	@Transactional
@@ -52,7 +52,7 @@ public class AuthService {
 	public UserResponse getMemberById(Long memberId) {
 		User user = userRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-		return user.toResponse(user);
+		return new UserResponse(user);
 	}
 
 	@Transactional
