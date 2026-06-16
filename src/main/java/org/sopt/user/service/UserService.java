@@ -21,9 +21,9 @@ public class UserService {
 
 	@Transactional
 	public Long join(UserCreateRequest request) {
-		String encodedPassword = passwordEncoder.encode(request.password());
+		String encodedPassword = passwordEncoder.encode(request.password);
 
-		User user = new User(request.name(), request.email(), encodedPassword);
+		User user = new User(request.name, request.email, encodedPassword);
 
 		User savedUser = userRepository.save(user);
 

@@ -38,7 +38,7 @@ public class AuthController {
 		@RequestBody UserLoginRequest request,
 		HttpServletResponse response
 	) {
-		AuthTokens authTokens = authService.login(request.email(), request.password());
+		AuthTokens authTokens = authService.login(request.email, request.password);
 
 		ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", authTokens.refreshToken())
 			.httpOnly(true)
