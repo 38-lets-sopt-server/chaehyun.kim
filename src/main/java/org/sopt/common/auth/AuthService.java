@@ -31,19 +31,19 @@ public class AuthService {
 			throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
 		}
 
-		return UserResponse.from(user);
+		return user.toResponse(user);
 	}
 
 	@Transactional
 	public AuthTokens login(String email, String password) {
 		UserResponse user = loginWithCredentials(email, password);
 
-		String accessToken = jwtService.generateAccessToken(user.id(), user.email());
-		String refreshToken = jwtService.generateRefreshToken(user.id());
+		String accessToken = jwtService.generateAccessToken(user.id, user.email);
+		String refreshToken = jwtService.generateRefreshToken(user.id);
 
-		refreshTokenRepository.deleteByUserId(user.id());
+		refreshTokenRepository.deleteByUserId(user.id);
 		refreshTokenRepository.save(
-			RefreshToken.of(user.id(), refreshToken, refreshTokenExpiresInSeconds)
+			RefreshToken.of(user.id, refreshToken, refreshTokenExpiresInSeconds)
 		);
 
 		return new AuthTokens(accessToken, refreshToken);
@@ -52,7 +52,7 @@ public class AuthService {
 	public UserResponse getMemberById(Long memberId) {
 		User user = userRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-		return UserResponse.from(user);
+		return user.toResponse(user);
 	}
 
 	@Transactional
