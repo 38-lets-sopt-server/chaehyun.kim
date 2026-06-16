@@ -37,8 +37,8 @@ public class PostService {
 	}
 
 	@Transactional
-	public CreatePostResponse createPost(CreatePostRequest request) {
-		User user = userRepository.findById(request.userId())
+	public CreatePostResponse createPost(CreatePostRequest request, Long userId) {
+		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
 		PostValidator.validateCreate(request);
@@ -84,11 +84,11 @@ public class PostService {
 	}
 
 	@Transactional
-	public void updatePost(Long id, UpdatePostRequest request) {
+	public void updatePost(Long id, UpdatePostRequest request, Long userId) {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getUser().getId().equals(request.userId())) {
+		if (!post.getUser().getId().equals(userId)) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 

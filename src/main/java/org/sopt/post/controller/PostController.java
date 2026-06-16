@@ -1,5 +1,6 @@
 package org.sopt.post.controller;
 
+import org.sopt.common.auth.UserId;
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.common.response.SuccessStatus;
@@ -10,6 +11,7 @@ import org.sopt.post.dto.response.PostListResponse;
 import org.sopt.post.dto.response.PostResponse;
 import org.sopt.post.service.PostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,9 +31,10 @@ public class PostController {
 	@Operation(summary = "게시글 생성", description = "새로운 게시글을 작성합니다.")
 	@PostMapping
 	public ResponseEntity<CustomAPIResponse<CreatePostResponse>> createPost(
-		@RequestBody CreatePostRequest request
+		@RequestBody CreatePostRequest request,
+		@UserId Long userId
 	) {
-		CreatePostResponse response = postService.createPost(request);
+		CreatePostResponse response = postService.createPost(request, userId);
 		return ResponseEntity
 			.status(SuccessStatus.CREATE_POST_SUCCESS.getStatus())
 			.body(CustomAPIResponse.createSuccess(SuccessStatus.CREATE_POST_SUCCESS, response));
@@ -65,9 +68,10 @@ public class PostController {
 	@PutMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<Void>> updatePost(
 		@Parameter(description = "수정할 게시글 ID") @PathVariable Long id,
-		@RequestBody UpdatePostRequest request
+		@RequestBody UpdatePostRequest request,
+		@UserId Long userId
 	) {
-		postService.updatePost(id, request);
+		postService.updatePost(id, request, userId);
 
 		return ResponseEntity
 			.status(SuccessStatus.UPDATE_POST_SUCCESS.getStatus())
@@ -78,7 +82,7 @@ public class PostController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CustomAPIResponse<Void>> deletePost(
 		@Parameter(description = "삭제할 게시글 ID") @PathVariable Long id,
-		@Parameter(description = "작성자 ID (검증용)") @RequestParam Long userId
+		@UserId Long userId
 	) {
 		postService.deletePost(id, userId);
 
