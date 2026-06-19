@@ -1,5 +1,7 @@
 package org.sopt.common.auth
 
+import org.sopt.common.exception.BusinessException
+import org.sopt.common.exception.ErrorCode
 import org.sopt.user.dto.UserResponse
 import org.sopt.user.repository.UserRepository
 import org.springframework.beans.factory.annotation.Value
@@ -21,9 +23,11 @@ class AuthService(
 
     fun loginWithCredentials(email: String, password: String): UserResponse {
         val user = userRepository.findByEmail(email)
-            ?: throw IllegalArgumentException("회원이 존재하지 않습니다.")
+            ?: throw BusinessException(ErrorCode.INVALID_CREDENTIALS)
 
-        require(passwordEncoder.matches(password, user.password)) { "이메일 또는 비밀번호가 올바르지 않습니다." }
+        if (!passwordEncoder.matches(password, user.password)) {
+            throw BusinessException(ErrorCode.INVALID_CREDENTIALS)
+        }
 
         return UserResponse(user)
     }
@@ -45,7 +49,7 @@ class AuthService(
 
     fun getMemberById(memberId: Long): UserResponse {
         val user = userRepository.findById(memberId)
-            .orElseThrow { IllegalArgumentException("회원이 존재하지 않습니다.") }
+            .orElseThrow { BusinessException(ErrorCode.USER_NOT_FOUND) }
         return UserResponse(user)
     }
 

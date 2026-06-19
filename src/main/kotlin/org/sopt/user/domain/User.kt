@@ -20,9 +20,4 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
-
-    protected constructor(): this(
-        password = "",
-        name = "",
-        email = "")
 }

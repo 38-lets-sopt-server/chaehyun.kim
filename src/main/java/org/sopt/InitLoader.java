@@ -30,9 +30,9 @@ public class InitLoader implements ApplicationRunner {
 
 			System.out.println("--------------------------------------");
 			System.out.println("테스트 유저 생성 완료");
-			System.out.println("유저 1 ID: " + user1.id + " (" + user1.getName() + ")");
-			System.out.println("유저 2 ID: " + user2.id + " (" + user2.getName() + ")");
-			System.out.println("유저 3 ID: " + user3.id + " (" + user3.getName() + ")");
+			System.out.println("유저 1 ID: " + user1.getId() + " (" + user1.getName() + ")");
+			System.out.println("유저 2 ID: " + user2.getId() + " (" + user2.getName() + ")");
+			System.out.println("유저 3 ID: " + user3.getId() + " (" + user3.getName() + ")");
 			System.out.println("--------------------------------------");
 		}
 	}

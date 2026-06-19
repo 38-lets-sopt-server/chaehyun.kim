@@ -16,6 +16,7 @@ public enum ErrorCode {
 	// USER
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER-40401", "해당 사용자를 찾을 수 없습니다."),
 	INVALID_AUTHENTICATION(HttpStatus.BAD_REQUEST, "AUTH-40001", "인증 정보가 누락되었거나 올바르지 않습니다."),
+	INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH-40100", "이메일 또는 비밀번호가 올바르지 않습니다."),
 	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH-40101", "유효하지 않은 토큰입니다."),
 	EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH-40102", "만료된 토큰입니다."),
 	BLACKLISTED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH-40103", "로그아웃된 토큰입니다."),

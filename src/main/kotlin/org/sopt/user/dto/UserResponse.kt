@@ -8,7 +8,7 @@ data class UserResponse(
     val email: String
 ){
     constructor(user: User) : this(
-        id = user.id,
+        id = requireNotNull(user.id),
         name = user.name,
         email = user.email
     )
