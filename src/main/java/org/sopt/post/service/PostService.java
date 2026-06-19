@@ -88,7 +88,7 @@ public class PostService {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getUser().getId().equals(userId)) {
+		if (post.getUser().getId() != userId) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 
@@ -100,7 +100,7 @@ public class PostService {
 		Post post = postRepository.findById(id)
 			.orElseThrow(() -> new PostNotFoundException(id));
 
-		if (!post.getUser().getId().equals(userId)) {
+		if (post.getUser().getId() != userId) {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 
