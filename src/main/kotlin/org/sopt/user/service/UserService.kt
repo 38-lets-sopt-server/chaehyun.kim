@@ -18,6 +18,6 @@ class UserService(private val userRepository: UserRepository, private val passwo
 
         val savedUser = userRepository.save(user)
 
-        return savedUser.id!!
+        return savedUser.id
     }
 }
