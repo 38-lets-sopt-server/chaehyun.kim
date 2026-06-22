@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.config.annotation.web.invoke
 
 @Configuration
 @EnableWebSecurity
@@ -20,17 +21,23 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-            .csrf { it.disable() }
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .authorizeHttpRequests{
-                it
-                    .requestMatchers("/api/v1/auth/login").permitAll()
-                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/posts", "/posts/*").permitAll()
-                    .anyRequest().authenticated()
+        http {
+            csrf { disable() }
+            sessionManagement {
+                sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+            authorizeHttpRequests {
+                authorize("/api/v1/auth/login", permitAll)
+                authorize("/v3/api-docs/**", permitAll)
+                authorize("/swagger-ui/**", permitAll)
+                authorize("/swagger-ui.html", permitAll)
+                authorize(HttpMethod.GET, "/posts", permitAll)
+                authorize(HttpMethod.GET, "/posts/*", permitAll)
+                authorize(anyRequest, authenticated)
+            }
+
+            addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+        }
         return http.build()
     }
 
