@@ -1,4 +1,4 @@
-package org.sopt.common.auth
+package org.sopt.auth
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException

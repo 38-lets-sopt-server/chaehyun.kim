@@ -1,4 +1,4 @@
-package org.sopt.common.auth
+package org.sopt.auth
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)

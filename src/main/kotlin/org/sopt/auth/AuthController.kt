@@ -1,4 +1,4 @@
-package org.sopt.common.auth
+package org.sopt.auth
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest

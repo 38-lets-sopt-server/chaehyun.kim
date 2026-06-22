@@ -1,4 +1,4 @@
-package org.sopt.common.auth
+package org.sopt.auth
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

@@ -1,6 +1,6 @@
 package org.sopt.post.controller;
 
-import org.sopt.common.auth.UserId;
+import org.sopt.auth.UserId;
 import org.sopt.common.enums.BoardType;
 import org.sopt.common.response.CustomAPIResponse;
 import org.sopt.common.response.SuccessStatus;
