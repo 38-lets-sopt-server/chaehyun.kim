@@ -1,7 +1,7 @@
-package org.sopt.auth
+package org.sopt.auth.repository
 
+import org.sopt.auth.domain.RefreshToken
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.*
 
 interface RefreshTokenRepository : JpaRepository<RefreshToken, Long> {
     fun findByToken(token: String): RefreshToken?

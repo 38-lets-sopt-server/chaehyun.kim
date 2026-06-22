@@ -1,8 +1,11 @@
-package org.sopt.auth
+package org.sopt.auth.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.sopt.auth.service.AuthService
+import org.sopt.auth.dto.TokenResponse
+import org.sopt.auth.resolver.UserId
 import org.sopt.common.response.CustomAPIResponse
 import org.sopt.common.response.SuccessStatus
 import org.sopt.user.dto.UserLoginRequest

@@ -1,4 +1,4 @@
-package org.sopt.auth
+package org.sopt.auth.resolver
 
 import org.sopt.common.exception.BusinessException
 import org.sopt.common.exception.ErrorCode

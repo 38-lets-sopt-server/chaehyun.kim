@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
-import org.sopt.auth.UserId;
+import org.sopt.auth.resolver.UserId;
 import org.springdoc.core.utils.SpringDocUtils;
 
 @Configuration

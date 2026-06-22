@@ -1,4 +1,4 @@
-package org.sopt.auth
+package org.sopt.auth.service
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
-import kotlin.math.max
 
 @Service
 class JwtService(

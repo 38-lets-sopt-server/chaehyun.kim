@@ -1,13 +1,13 @@
-package org.sopt.auth
+package org.sopt.auth.filter
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain
-import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import lombok.RequiredArgsConstructor
+import org.sopt.auth.service.JwtService
+import org.sopt.auth.service.TokenBlacklistService
 import org.sopt.common.exception.ErrorCode
 import org.sopt.common.response.CustomAPIResponse
 import org.springframework.http.HttpHeaders
@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.io.IOException
 
 @Component
 class JwtAuthFilter(
