@@ -45,7 +45,7 @@ class AuthService(
 
         refreshTokenRepository.deleteByUserId(user.id)
         refreshTokenRepository.save(
-            RefreshToken.of(user.id, refreshToken, refreshTokenExpiresInSeconds)
+            RefreshToken(user.id, refreshToken, refreshTokenExpiresInSeconds)
         )
 
         return AuthTokens(accessToken, refreshToken)

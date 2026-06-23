@@ -45,7 +45,7 @@ class AuthController(
         response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
 
         return ResponseEntity.ok(
-            CustomAPIResponse.createSuccess(SuccessStatus.LOGIN_SUCCESS, TokenResponse.of(authTokens.accessToken))
+            CustomAPIResponse.createSuccess(SuccessStatus.LOGIN_SUCCESS, TokenResponse(authTokens.accessToken))
         )
     }
 

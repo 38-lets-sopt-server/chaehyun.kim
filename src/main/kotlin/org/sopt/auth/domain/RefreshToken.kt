@@ -23,6 +23,16 @@ class RefreshToken private constructor(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long? = null
 
+    constructor(
+        userId: Long,
+        token: String,
+        expiresInSeconds: Long
+    ) : this(
+        userId = userId,
+        token = token,
+        expiresAt = LocalDateTime.now().plusSeconds(expiresInSeconds)
+    )
+
     fun rotate(
         newToken: String,
         expiresInSeconds: Long
