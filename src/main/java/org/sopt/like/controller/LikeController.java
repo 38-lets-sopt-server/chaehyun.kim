@@ -38,6 +38,6 @@ public class LikeController {
 
 		return ResponseEntity
 			.status(status.getStatus())
-			.body(CustomAPIResponse.createSuccess(status, null));
+			.body(CustomAPIResponse.Companion.createSuccess(status, null));
 	}
 }

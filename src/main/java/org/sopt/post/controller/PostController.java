@@ -36,7 +36,7 @@ public class PostController {
 		CreatePostResponse response = postService.createPost(request, userId);
 		return ResponseEntity
 			.status(SuccessStatus.CREATE_POST_SUCCESS.getStatus())
-			.body(CustomAPIResponse.createSuccess(SuccessStatus.CREATE_POST_SUCCESS, response));
+			.body(CustomAPIResponse.Companion.createSuccess(SuccessStatus.CREATE_POST_SUCCESS, response));
 	}
 
 	@Operation(summary = "게시글 목록 조회", description = "게시판 타입별로 페이징된 게시글 목록을 조회합니다.")
@@ -50,7 +50,7 @@ public class PostController {
 
 		return ResponseEntity
 			.status(SuccessStatus.GET_POST_LIST_SUCCESS.getStatus())
-			.body(CustomAPIResponse.createSuccess(SuccessStatus.GET_POST_LIST_SUCCESS, response));
+			.body(CustomAPIResponse.Companion.createSuccess(SuccessStatus.GET_POST_LIST_SUCCESS, response));
 	}
 
 	@Operation(summary = "게시글 상세 조회", description = "특정 ID의 게시글 상세 정보를 조회합니다.")
@@ -60,7 +60,7 @@ public class PostController {
 
 		return ResponseEntity
 			.status(SuccessStatus.GET_POST_SUCCESS.getStatus())
-			.body(CustomAPIResponse.createSuccess(SuccessStatus.GET_POST_SUCCESS, response));
+			.body(CustomAPIResponse.Companion.createSuccess(SuccessStatus.GET_POST_SUCCESS, response));
 	}
 
 	@Operation(summary = "게시글 수정", description = "게시글의 제목과 내용을 수정합니다.")
@@ -74,7 +74,7 @@ public class PostController {
 
 		return ResponseEntity
 			.status(SuccessStatus.UPDATE_POST_SUCCESS.getStatus())
-			.body(CustomAPIResponse.createSuccess(SuccessStatus.UPDATE_POST_SUCCESS, null));
+			.body(CustomAPIResponse.Companion.createSuccess(SuccessStatus.UPDATE_POST_SUCCESS, null));
 	}
 
 	@Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
@@ -87,6 +87,6 @@ public class PostController {
 
 		return ResponseEntity
 			.status(SuccessStatus.DELETE_POST_SUCCESS.getStatus())
-			.body(CustomAPIResponse.createSuccess(SuccessStatus.DELETE_POST_SUCCESS, null));
+			.body(CustomAPIResponse.Companion.createSuccess(SuccessStatus.DELETE_POST_SUCCESS, null));
 	}
 }

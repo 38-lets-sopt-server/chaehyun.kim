@@ -45,7 +45,7 @@ class JwtService(
         return verifier.verify(token)
             .subject
             .toLongOrNull()
-            ?: throw BusinessException(ErrorCode.INVALID_TOKEN_PAYLOAD)
+            ?: throw BusinessException(ErrorCode.INVALID_AUTHENTICATION)
     }
 
     fun getTokenRemainingSeconds(token: String): Long {
