@@ -64,14 +64,15 @@ class JwtAuthFilter(
 
         val memberId = jwtService.verifyAndGetUserId(token)
 
-        SecurityContextHolder.getContext().authentication =
-            UsernamePasswordAuthenticationToken(
-                memberId.toString(),
-                null,
-                emptyList()
-            ).apply {
-                details = WebAuthenticationDetailsSource().buildDetails(request)
-            }
+        val authentication = UsernamePasswordAuthenticationToken(
+            memberId.toString(),
+            null,
+            emptyList()
+        ).apply {
+            details = WebAuthenticationDetailsSource().buildDetails(request)
+        }
+
+        SecurityContextHolder.getContext().authentication = authentication
     }
 
     private fun sendErrorResponse(response: HttpServletResponse, errorCode: ErrorCode) {
