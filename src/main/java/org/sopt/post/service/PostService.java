@@ -44,11 +44,11 @@ public class PostService {
 		PostValidator.validateCreate(request);
 
 		Post post = new Post(
-			request.boardType(),
-			request.title(),
-			request.content(),
+			request.boardType,
+			request.title,
+			request.content,
 			user,
-			request.isAnonymous()
+			request.isAnonymous
 		);
 		postRepository.save(post);
 		return new CreatePostResponse(post.getId());
@@ -92,8 +92,8 @@ public class PostService {
 			throw new BusinessException(ErrorCode.HANDLE_ACCESS_DENIED);
 		}
 
-		PostValidator.validateUpdate(request.title(), request.content());
-		post.update(request.title(), request.content());
+		PostValidator.validateUpdate(request.title, request.content);
+		post.update(request.title, request.content);
 	}
 
 	public void deletePost(Long id, Long userId) {
