@@ -1,5 +1,9 @@
-package org.sopt.common.auth
+package org.sopt.auth.service
 
+import org.sopt.auth.*
+import org.sopt.auth.domain.RefreshToken
+import org.sopt.auth.dto.AuthTokens
+import org.sopt.auth.repository.RefreshTokenRepository
 import org.sopt.common.exception.BusinessException
 import org.sopt.common.exception.ErrorCode
 import org.sopt.user.dto.UserResponse
@@ -41,7 +45,7 @@ class AuthService(
 
         refreshTokenRepository.deleteByUserId(user.id)
         refreshTokenRepository.save(
-            RefreshToken.of(user.id, refreshToken, refreshTokenExpiresInSeconds)
+            RefreshToken(user.id, refreshToken, refreshTokenExpiresInSeconds)
         )
 
         return AuthTokens(accessToken, refreshToken)
