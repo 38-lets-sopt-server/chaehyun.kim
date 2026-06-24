@@ -29,21 +29,9 @@ class JwtAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val header = request.getHeader(HttpHeaders.AUTHORIZATION)
-        if (header?.startsWith("Bearer ") == true) {
-            val token = header.substring("Bearer ".length).trim()
+        extractToken(request)?.let { token ->
             try {
-                if (tokenBlacklistService.isBlacklisted(token)) {
-                    sendErrorResponse(response, ErrorCode.BLACKLISTED_TOKEN)
-                    return
-                }
-
-                val memberId = jwtService.verifyAndGetUserId(token)
-                val authentication = UsernamePasswordAuthenticationToken(
-                    memberId.toString(), null, emptyList()
-                )
-                authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = authentication
+                authenticate(token, request)
                 request.setAttribute("accessToken", token)
             } catch (e: TokenExpiredException) {
                 sendErrorResponse(response, ErrorCode.EXPIRED_TOKEN)
@@ -60,6 +48,32 @@ class JwtAuthFilter(
         filterChain.doFilter(request, response)
     }
 
+    private fun extractToken(request: HttpServletRequest): String? =
+        request.getHeader(HttpHeaders.AUTHORIZATION)
+            ?.takeIf { it.startsWith(BEARER_PREFIX) }
+            ?.removePrefix(BEARER_PREFIX)
+            ?.trim()
+
+    private fun authenticate(
+        token: String,
+        request: HttpServletRequest
+    ) {
+        if (tokenBlacklistService.isBlacklisted(token)) {
+            throw IllegalArgumentException()
+        }
+
+        val memberId = jwtService.verifyAndGetUserId(token)
+
+        SecurityContextHolder.getContext().authentication =
+            UsernamePasswordAuthenticationToken(
+                memberId.toString(),
+                null,
+                emptyList()
+            ).apply {
+                details = WebAuthenticationDetailsSource().buildDetails(request)
+            }
+    }
+
     private fun sendErrorResponse(response: HttpServletResponse, errorCode: ErrorCode) {
         response.status = errorCode.status.value()
         response.contentType = "application/json;charset=UTF-8"
@@ -68,5 +82,9 @@ class JwtAuthFilter(
                 CustomAPIResponse.createFail<Nothing>(errorCode.code, errorCode.message)
             )
         )
+    }
+
+    companion object {
+        private const val BEARER_PREFIX = "Bearer "
     }
 }
