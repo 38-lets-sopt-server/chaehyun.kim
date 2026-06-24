@@ -51,7 +51,7 @@ public class PostService {
 			request.isAnonymous
 		);
 		postRepository.save(post);
-		return new CreatePostResponse(post.getId());
+		return new CreatePostResponse(post.id);
 	}
 
 	@Transactional(readOnly = true)
