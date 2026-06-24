@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.servers.Server
-import org.sopt.auth.resolver.UserId
+import org.sopt.common.auth.resolver.UserId
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

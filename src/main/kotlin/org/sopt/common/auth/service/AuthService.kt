@@ -1,9 +1,9 @@
-package org.sopt.auth.service
+package org.sopt.common.auth.service
 
 import org.sopt.auth.*
-import org.sopt.auth.domain.RefreshToken
-import org.sopt.auth.dto.AuthTokens
-import org.sopt.auth.repository.RefreshTokenRepository
+import org.sopt.common.auth.domain.RefreshToken
+import org.sopt.common.auth.dto.AuthTokens
+import org.sopt.common.auth.repository.RefreshTokenRepository
 import org.sopt.common.exception.BusinessException
 import org.sopt.common.exception.ErrorCode
 import org.sopt.user.dto.UserResponse

@@ -1,4 +1,4 @@
-package org.sopt.auth.service
+package org.sopt.common.auth.service
 
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service

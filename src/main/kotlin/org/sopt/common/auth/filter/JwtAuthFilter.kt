@@ -1,4 +1,4 @@
-package org.sopt.auth.filter
+package org.sopt.common.auth.filter
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.sopt.auth.service.JwtService
-import org.sopt.auth.service.TokenBlacklistService
+import org.sopt.common.auth.service.JwtService
+import org.sopt.common.auth.service.TokenBlacklistService
 import org.sopt.common.exception.ErrorCode
 import org.sopt.common.response.CustomAPIResponse
 import org.springframework.http.HttpHeaders

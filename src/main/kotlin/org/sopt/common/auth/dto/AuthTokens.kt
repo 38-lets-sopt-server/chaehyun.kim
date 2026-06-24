@@ -1,4 +1,4 @@
-package org.sopt.auth.dto
+package org.sopt.common.auth.dto
 
 data class AuthTokens(
     val accessToken: String,
