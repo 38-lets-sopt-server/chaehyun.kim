@@ -1,6 +1,5 @@
 package org.sopt.common.auth.service
 
-import org.sopt.auth.*
 import org.sopt.common.auth.domain.RefreshToken
 import org.sopt.common.auth.dto.AuthTokens
 import org.sopt.common.auth.repository.RefreshTokenRepository
