@@ -20,8 +20,6 @@ class Like : BaseTimeEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private var post: Post? = null
 
-    protected constructor()
-
     constructor(user: User, post: Post) {
         this.user = user
         this.post = post
