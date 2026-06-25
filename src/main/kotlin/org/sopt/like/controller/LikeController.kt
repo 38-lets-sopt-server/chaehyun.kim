@@ -2,7 +2,7 @@ package org.sopt.like.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.sopt.auth.resolver.UserId
+import org.sopt.common.auth.resolver.UserId
 import org.sopt.common.response.CustomAPIResponse
 import org.sopt.common.response.SuccessStatus
 import org.sopt.like.service.LikeService
